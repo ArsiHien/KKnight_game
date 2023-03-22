@@ -1,0 +1,73 @@
+# depslib dependency file v1.0
+1679454405 source:d:\kknight\main.cpp
+	"Header.h"
+	"renderWindow.h"
+	"gameMap.h"
+	"Hero.h"
+	"ImpTimer.h"
+	"ThreatsObject.h"
+
+1679368418 d:\kknight\header.h
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+
+1679192796 source:d:\kknight\initwindow.cpp
+	"initWindow.h"
+	"Header.h"
+
+1679192815 d:\kknight\initwindow.h
+	"Header.h"
+
+1679191887 source:d:\kknight\header.cpp
+	"Header.h"
+
+1679192153 source:d:\kknight\loadimages.cpp
+	"loadImages.h"
+	"Header.h"
+
+1679192138 d:\kknight\loadimages.h
+	"Header.h"
+
+1679387305 source:d:\kknight\renderwindow.cpp
+	"renderWindow.h"
+
+1679301920 d:\kknight\renderwindow.h
+	"Header.h"
+
+1679217536 source:d:\kknight\gamemap.cpp
+	"Header.h"
+	"gameMap.h"
+
+1679321789 d:\kknight\gamemap.h
+	"Header.h"
+	"renderWindow.h"
+
+1679411974 d:\kknight\hero.h
+	"Header.h"
+	"renderWindow.h"
+	"danBan.h"
+
+1679452645 source:d:\kknight\hero.cpp
+	"Hero.h"
+
+1679367770 source:d:\kknight\imptimer.cpp
+	"ImpTimer.h"
+
+1679367770 d:\kknight\imptimer.h
+	"Header.h"
+
+1679410298 source:d:\kknight\danban.cpp
+	"danBan.h"
+
+1679410298 d:\kknight\danban.h
+	"Header.h"
+	"renderWindow.h"
+
+1679453068 source:d:\kknight\threatsobject.cpp
+	"ThreatsObject.h"
+
+1679452991 d:\kknight\threatsobject.h
+	"Header.h"
+	"renderWindow.h"
+
