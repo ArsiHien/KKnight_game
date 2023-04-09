@@ -32,20 +32,18 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Enemy.cpp" />
+		<Unit filename="Enemy.h" />
+		<Unit filename="GameMap.cpp" />
+		<Unit filename="GameMap.h" />
 		<Unit filename="Header.h" />
-		<Unit filename="Hero.cpp" />
-		<Unit filename="Hero.h" />
-		<Unit filename="ImpTimer.cpp" />
-		<Unit filename="ImpTimer.h" />
-		<Unit filename="ThreatsObject.cpp" />
-		<Unit filename="ThreatsObject.h" />
-		<Unit filename="danBan.cpp" />
-		<Unit filename="danBan.h" />
-		<Unit filename="gameMap.cpp" />
-		<Unit filename="gameMap.h" />
+		<Unit filename="Player.cpp" />
+		<Unit filename="Player.h" />
+		<Unit filename="RenderWindow.cpp" />
+		<Unit filename="RenderWindow.h" />
+		<Unit filename="Tile.cpp" />
+		<Unit filename="Tile.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="renderWindow.cpp" />
-		<Unit filename="renderWindow.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

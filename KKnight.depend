@@ -1,73 +1,61 @@
 # depslib dependency file v1.0
-1679454405 source:d:\kknight\main.cpp
+1681051685 source:d:\kknight\main.cpp
 	"Header.h"
-	"renderWindow.h"
-	"gameMap.h"
-	"Hero.h"
-	"ImpTimer.h"
-	"ThreatsObject.h"
+	"RenderWindow.h"
+	"GameMap.h"
+	"Player.h"
+	"Enemy.h"
 
-1679368418 d:\kknight\header.h
+1681007940 source:d:\kknight\renderwindow.cpp
+	"renderWindow.h"
+
+1681028100 d:\kknight\renderwindow.h
+	"Header.h"
+
+1681048188 d:\kknight\header.h
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
 
-1679192796 source:d:\kknight\initwindow.cpp
-	"initWindow.h"
+1679833085 source:d:\kknight\tile.cpp
+	"Tile.h"
+	"Player.h"
+
+1679626946 d:\kknight\tile.h
 	"Header.h"
+	"RenderWindow.h"
 
-1679192815 d:\kknight\initwindow.h
+1680018422 source:d:\kknight\gamemap.cpp
 	"Header.h"
+	"GameMap.h"
 
-1679191887 source:d:\kknight\header.cpp
+1679930915 d:\kknight\gamemap.h
 	"Header.h"
+	"RenderWindow.h"
+	"Tile.h"
 
-1679192153 source:d:\kknight\loadimages.cpp
-	"loadImages.h"
+1681047111 d:\kknight\player.h
 	"Header.h"
+	"RenderWindow.h"
+	"Tile.h"
+	"GameMap.h"
+	"Enemy.h"
 
-1679192138 d:\kknight\loadimages.h
-	"Header.h"
+1681051080 source:d:\kknight\player.cpp
+	"Player.h"
 
-1679387305 source:d:\kknight\renderwindow.cpp
-	"renderWindow.h"
-
-1679301920 d:\kknight\renderwindow.h
-	"Header.h"
-
-1679217536 source:d:\kknight\gamemap.cpp
-	"Header.h"
-	"gameMap.h"
-
-1679321789 d:\kknight\gamemap.h
-	"Header.h"
-	"renderWindow.h"
-
-1679411974 d:\kknight\hero.h
-	"Header.h"
-	"renderWindow.h"
-	"danBan.h"
-
-1679452645 source:d:\kknight\hero.cpp
-	"Hero.h"
-
-1679367770 source:d:\kknight\imptimer.cpp
+1679757875 source:d:\kknight\imptimer.cpp
 	"ImpTimer.h"
 
-1679367770 d:\kknight\imptimer.h
+1679757875 d:\kknight\imptimer.h
 	"Header.h"
 
-1679410298 source:d:\kknight\danban.cpp
-	"danBan.h"
+1681051094 source:d:\kknight\enemy.cpp
+	"Enemy.h"
 
-1679410298 d:\kknight\danban.h
+1681029922 d:\kknight\enemy.h
 	"Header.h"
-	"renderWindow.h"
-
-1679453068 source:d:\kknight\threatsobject.cpp
-	"ThreatsObject.h"
-
-1679452991 d:\kknight\threatsobject.h
-	"Header.h"
-	"renderWindow.h"
+	"Tile.h"
+	"RenderWindow.h"
+	"Player.h"
 

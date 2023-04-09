@@ -7,34 +7,58 @@
 
 using namespace std;
 
-const int FRAME_PER_SECOND = 60;
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 640;
 const string WINDOW_TITLE = "KKnight_ndh";
 
-#define BLANK_TILE 0
-#define TILE_SIZE 64
-#define MAX_MAP_X 400
-#define MAX_MAP_Y 10
+const int TILE_SIZE = 16;
 
-struct Map
+const int LEVEL_WIDTH = 1600;
+const int LEVEL_HEIGHT = 640;
+
+const int TOTAL_TILES = 4000;
+const int TOTAL_TILE_SPRITES = 63*65;
+const int TILE_FILE_SIZE = 1024;
+
+const int GRAVITY_SPEED = 1;
+const int MAX_FALL_SPEED = 8;
+
+struct Input
 {
-    int start_x;
-    int start_y;
-
-    int max_x;
-    int max_y;
-
-    int tile[MAX_MAP_Y][MAX_MAP_X];
-    string file_name;
-};
-
-struct Input{
     int left;
     int right;
-    int up;
-    int down;
+    int defend;
     int jump;
+    int attack1;
+    int attack2;
+    int attack3;
+    int hurt;
+    int dead;
+    int idle;
+    int run;
+    int run_attack;
+};
+
+struct Animation{
+    int index;
+    int amount_of_frame;
+    int frame_width;
+    int frame_height;
+    int slow_down;
+    int denta_x_right;
+    int denta_x_left;
+    int denta_y;
+
+    Animation(int i, int aof, int fw, int fh, int sd = 1, int dxr = 0, int dxl = 0, int dy = 0){
+        index = i;
+        amount_of_frame = aof;
+        frame_width = fw;
+        frame_height = fh;
+        slow_down = sd;
+        denta_x_right = dxr;
+        denta_x_left = dxl;
+        denta_y = dy;
+    }
 };
 
 #endif // HEADER_H_INCLUDED

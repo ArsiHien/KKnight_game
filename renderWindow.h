@@ -3,29 +3,27 @@
 
 #include "Header.h"
 
-class renderWindow{
+class RenderWindow
+{
 public:
-    void initWindow(SDL_Window* &window, SDL_Renderer* &renderer);
+    void initWindow();
     void quitSDL();
     void clearScreen();
     void display();
 
     void logSDLError(ostream& os, const string &msg, bool fatal);
 
-    void setRect(const int& x, const int& y) {rect.x = x, rect.y = y;}
-    virtual SDL_Texture* loadIMG(const string &filePath, SDL_Renderer* renderer);
+    SDL_Texture* loadIMG(const string &filePath);
     void renderTexture(SDL_Renderer* ren, const SDL_Rect* clip = nullptr);
-    void Free();
-
-    SDL_Renderer* getRenderer() const {return g_renderer;};
-    SDL_Rect getRect() const {return rect;}
-    SDL_Texture* getTexture() const {return g_texture;}
+    void render(SDL_Texture *mTexture, int x, int y, int realWidth, int realHeight, SDL_Rect* clip = nullptr, double angle = 0.0, SDL_Point* center = nullptr, SDL_RendererFlip flip = SDL_FLIP_NONE );
+    SDL_Renderer* getRenderer() const
+    {
+        return m_renderer;
+    };
 
 protected:
-    SDL_Window* g_window = nullptr;
-    SDL_Renderer* g_renderer = nullptr;
-    SDL_Texture* g_texture = nullptr;
-    SDL_Rect rect;
+    SDL_Window* m_window = nullptr;
+    SDL_Renderer* m_renderer = nullptr;
 };
 
 #endif // RENDERWINDOW_H_INCLUDED

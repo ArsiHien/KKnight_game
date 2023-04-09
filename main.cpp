@@ -1,29 +1,27 @@
 #include "Header.h"
-#include "renderWindow.h"
-#include "gameMap.h"
-#include "Hero.h"
-#include "ImpTimer.h"
-#include "ThreatsObject.h"
+#include "RenderWindow.h"
+#include "GameMap.h"
+#include "Player.h"
+#include "Enemy.h"
 
-SDL_Window* window;
-SDL_Renderer* renderer;
 SDL_Event event;
 
-renderWindow background;
-renderWindow windowSceen;
+RenderWindow windowScreen;
+SDL_Rect fullScreen = {0, 0, SCREEN_HEIGHT, SCREEN_WIDTH};
 
-vector <ThreatsObject*> makeThreatList(){
-    vector <ThreatsObject*> list_threats;
-    ThreatsObject* threats_objs = new ThreatsObject[20];
+vector <Monster*> makeThreatList()
+{
+    vector <Monster*> list_threats;
+    Monster* threats_objs = new Monster[3];
 
-    for(int i = 0; i < 20; i++){
-        ThreatsObject* p_threat = (threats_objs + i);
-        if(p_threat != nullptr){
-            p_threat->loadIMG("gfx/threat_level.png", renderer);
+    for(int i = 0; i < 3; i++)
+    {
+        Monster* p_threat = (threats_objs + i);
+        if(p_threat != nullptr)
+        {
+            p_threat->loadMonsterTexture(windowScreen);
             p_threat->set_clips();
-            p_threat->set_x_pos(700 + i*1200);
-            p_threat->set_y_pos(250);
-
+            p_threat->set_x_pos(200 + i*500);;
             list_threats.push_back(p_threat);
         }
     }
@@ -32,67 +30,72 @@ vector <ThreatsObject*> makeThreatList(){
 
 int main(int argc, char* argv[])
 {
-    ImpTimer fps_timer;
+    windowScreen.initWindow();
 
-    windowSceen.initWindow(window, renderer);
-    renderer = windowSceen.getRenderer();
-    background.loadIMG("gfx/background.png", renderer);
+    SDL_Texture *tex = windowScreen.loadIMG("gfx/background.png");
 
-    gameMap game_map;
-    game_map.LoadMap("map/map01.dat");
-    game_map.LoadTile(renderer);
-
-    Hero player;
-    player.loadIMG("gfx/player_right.png", renderer);
-    player.setClips();
-
-    vector <ThreatsObject*> threats_list = makeThreatList();
-    cout << threats_list.size();
 
     bool gameRunning = true;
+    GameMap Map;
+    SDL_Rect mCamera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+    Map.setTiles();
+    Map.loadTileTexture(windowScreen);
+
+    Tile *map_data = Map.getMap();
+    Player knight;
+    knight.setClips();
+    knight.loadPlayerTexture(windowScreen);
+
+    vector <Monster*> threats_list = makeThreatList();
 
     while(gameRunning)
     {
-        fps_timer.start();
         while(SDL_PollEvent(&event))
         {
             if(event.type == SDL_QUIT) gameRunning = false;
-            player.handelInputAction(event, renderer);
+            knight.handleEvent(event);
         }
 
-        windowSceen.clearScreen();
-        background.renderTexture(renderer);
+        windowScreen.clearScreen();
 
-        Map map_data = game_map.getMap();
+        windowScreen.render(tex,0, 0, 1280, 640);
 
-        player.handleDan(renderer);
-        player.setMapXY(map_data.start_x, map_data.start_y);
-        player.doPlayer(map_data);
-        player.show(renderer);
+        Map.render(windowScreen, mCamera);
 
-        game_map.setMap(map_data);
-        game_map.DrawMap(renderer);
+        knight.doPlayer(map_data);
+        knight.centerPlayerOnMap(mCamera);
+        knight.show(windowScreen, mCamera);
+        knight.drawHP(*windowScreen.getRenderer(), mCamera);
+        if(knight.isDead())
+        {
+            tex = windowScreen.loadIMG("gfx/Game_Over_logo.png");
+            windowScreen.render(tex,0, 0, 1280, 640);
+            windowScreen.display();
+        }
 
-        for(int i = 0; i < threats_list.size(); i++){
-            ThreatsObject* p_threat = threats_list.at(i);
-            if(p_threat != nullptr){
-                p_threat->setMapXY(map_data.start_x, map_data.start_y);
+        for(int i = 0; i < threats_list.size(); i++)
+        {
+            Monster* p_threat = threats_list.at(i);
+            if(p_threat != nullptr)
+            {
+                p_threat->setMapXY(mCamera.x, mCamera.y);
                 p_threat->doPlayer(map_data);
-                p_threat->show(renderer);
+                p_threat->show(windowScreen);
+                p_threat->isAttacked(knight.getInputType(), knight.getBox());
+                if(p_threat->getHP() <= 0)
+                {
+                    threats_list.erase(threats_list.begin() + i);
+                }
+                knight.isHitted(p_threat->isAttacking(knight.getInputType(), knight.getBox()));
             }
         }
-
-        windowSceen.display();
-        int real_imp_time = fps_timer.get_ticks();
-        int time_one_frame = 1000/FRAME_PER_SECOND;
-
-        if(real_imp_time < time_one_frame){
-            int delay_time = time_one_frame - real_imp_time;
-            if(delay_time > 0) SDL_Delay(delay_time);
+        if(threats_list.size() == 0){
+            tex = windowScreen.loadIMG("gfx/win.png");
+            windowScreen.render(tex,0, 0, 1280, 640);
         }
+        windowScreen.display();
     }
-    windowSceen.quitSDL();
-    background.quitSDL();
+    windowScreen.quitSDL();
 
     return 0;
 }

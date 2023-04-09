@@ -2,26 +2,22 @@
 #define GAMEMAP_H_INCLUDED
 
 #include "Header.h"
-#include "renderWindow.h"
+#include "RenderWindow.h"
+#include "Tile.h"
 
-#define TOTAL_TILE 20
-
-class TileMap: public renderWindow{
+class GameMap
+{
 public:
-
-};
-
-class gameMap{
-public:
-    void LoadMap(string filePath);
-    void LoadTile(SDL_Renderer* screen);
-    void DrawMap(SDL_Renderer* screen);
-    Map getMap() const {return game_map;};
-    void setMap(Map& map_data) {game_map = map_data;};
+    GameMap();
+    void setTiles();
+    void loadTileTexture(RenderWindow& window);
+    void render(RenderWindow &window, SDL_Rect& camera);
+    Tile* getMap() {return tileSet;}
 
 private:
-    Map game_map;
-    TileMap tile_map[TOTAL_TILE];
+    Tile tileSet[TOTAL_TILES];
+    SDL_Rect m_tileClips[TOTAL_TILE_SPRITES];
+    SDL_Texture *mTexture;
 };
 
 #endif // GAMEMAP_H_INCLUDED
