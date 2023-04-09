@@ -10,6 +10,7 @@ CÁCH CHƠI:
  - Nhấn J/K/L để tấn công 
  
  CÁCH TẢI:
- - Nhấn CODE -> Dowload ZIP
+ - Nhấn Code -> Dowload ZIP
  - Giải nén và chạy file KKnight.exe
  
+![image](https://user-images.githubusercontent.com/125260143/230783343-783bce82-3540-40c7-a8ed-676965d9aad5.png)
