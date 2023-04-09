@@ -11,4 +11,5 @@ CÁCH CHƠI:
  
  CÁCH TẢI:
  - Tải file .zip ở [Release](https://github.com/duchien714/KKnight_game/releases/tag/v1.0) 
+ - Giải nén và chạy file KKnight.exe
  
