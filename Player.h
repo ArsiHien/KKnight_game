@@ -8,10 +8,8 @@
 #include "Enemy.h"
 
 const int PLAYER_SPEED = 4;
-const int PLAYR_JUMP_VAL = 25;
-
+const int PLAYR_JUMP_VAL = 28;
 const int SHEET_WIDTH = 1109;
-
 const int TOTAL_FRAME = 49;
 
 class Player : public RenderWindow
@@ -19,11 +17,6 @@ class Player : public RenderWindow
 public:
     Player();
 
-    enum playerType{
-        NONE = 0,
-        LEFT = 1,
-        RIGHT = 2,
-    };
     void loadPlayerTexture(RenderWindow &window);
     void show(RenderWindow &window, SDL_Rect &mCamera);
     void handleEvent( SDL_Event& event );
@@ -40,21 +33,23 @@ public:
     void isHitted(bool ok);
     bool isDead();
 
+    SDL_Rect getCurrentBox() {return currentBox;}
     SDL_Rect getBox() {return mBox;}
     Input getInputType() {return input_type;}
+    int getStatus() {return status;}
 
 private:
-    SDL_Rect mBox;
-    Tile map_data;
-    int mVelX, mVelY;
     SDL_Texture *mTexture;
+    SDL_Rect mBox;
+    SDL_Rect currentBox;
     SDL_Rect m_playerClips[TOTAL_FRAME];
+
+    Tile map_data;
+    Input input_type;
     int status;
     int frame;
-
     bool on_ground;
-    Input input_type;
-
+    int mVelX, mVelY;
     int HP;
 
     Animation idle = Animation(0, 4, 64, 80, 16);
@@ -64,7 +59,7 @@ private:
     Animation dead = Animation(4, 6, 160, 80);
     Animation defend = Animation(5, 5, 64, 80, 8);
     Animation hurt = Animation(6, 2, 64, 80);
-    Animation jump = Animation(7, 6, 128, 80, 8, 32, 32, 0);
+    Animation jump = Animation(7, 6, 112, 80, 8, 16, 16, 0);
     Animation run = Animation(8, 7, 80, 80, 12);
     Animation run_attack = Animation(9, 6, 128, 96, 12, 20, 16);
     vector <Animation> animations;

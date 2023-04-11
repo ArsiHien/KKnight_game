@@ -3,16 +3,15 @@
 Monster::Monster()
 {
     HP = 150;
-    width_frame = 0;
-    height_frame = 0;
     on_ground = false;
     frame = 0;
     mBox = {0, 0, 60, 60};
     x_pos = 0;
     y_pos = 0;
-    isPlayerTakeHit = 0;
     mVelX = 0;
     mVelY = 0;
+    map_x = 0;
+    map_y = 0;
 }
 
 Monster::~Monster()
@@ -108,18 +107,33 @@ bool Monster::touchesWall(Tile *map_data)
     return false;
 }
 
-void Monster::isAttacked(Input i, SDL_Rect box){
-    if(i.attack1 == 1 || i.attack2 == 1 || i.attack3 == 1){
-        if(checkCollision(box)){
-            HP--;
-            return;
+void Monster::isAttacked(Input i, SDL_Rect box, SDL_Rect currentBox, int status)
+{
+    if(i.attack1 == 1 || i.attack2 == 1 || i.attack3 == 1)
+    {
+        if(status == RIGHT)
+        {
+            if(box.x < x_pos && checkCollision(currentBox))
+            {
+                HP--;
+            }
+        }
+        if(status == LEFT)
+        {
+            if(box.x >= x_pos && checkCollision(currentBox))
+            {
+                HP--;
+            }
         }
     }
 }
 
-bool Monster::isAttacking(Input i, SDL_Rect box){
-    if(i.defend == 0 ){
-        if(checkCollision(box)){
+bool Monster::isAttacking(Input i, SDL_Rect box, int status)
+{
+    if(i.defend == 0 )
+    {
+        if(checkCollision(box))
+        {
             return true;
         }
     }

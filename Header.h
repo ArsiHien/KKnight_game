@@ -23,6 +23,13 @@ const int TILE_FILE_SIZE = 1024;
 const int GRAVITY_SPEED = 1;
 const int MAX_FALL_SPEED = 8;
 
+enum playerType
+{
+    NONE = 0,
+    LEFT = 1,
+    RIGHT = 2,
+};
+
 struct Input
 {
     int left;
@@ -39,7 +46,8 @@ struct Input
     int run_attack;
 };
 
-struct Animation{
+struct Animation
+{
     int index;
     int amount_of_frame;
     int frame_width;
@@ -49,7 +57,8 @@ struct Animation{
     int denta_x_left;
     int denta_y;
 
-    Animation(int i, int aof, int fw, int fh, int sd = 1, int dxr = 0, int dxl = 0, int dy = 0){
+    Animation(int i = 0, int aof = 0, int fw = 0, int fh = 0, int sd = 1, int dxr = 0, int dxl = 0, int dy = 0)
+    {
         index = i;
         amount_of_frame = aof;
         frame_width = fw;

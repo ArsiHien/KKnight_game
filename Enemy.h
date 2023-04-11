@@ -41,8 +41,8 @@ public:
 
     vector <Monster*> makeThreatList(SDL_Renderer* ren);
 
-    void isAttacked(Input i, SDL_Rect box);
-    bool isAttacking (Input i, SDL_Rect box);
+    void isAttacked(Input i, SDL_Rect box, SDL_Rect currentBox, int status);
+    bool isAttacking (Input i, SDL_Rect box, int status);
     int getHP() {return HP;}
 
     SDL_Rect getBox(){return mBox;}
@@ -56,9 +56,6 @@ private:
     int x_pos;
     int y_pos;
 
-    int width_frame;
-    int height_frame;
-
     SDL_Rect frame_clip[MONSTER_FRAME_NUM];
     int frame;
 
@@ -66,8 +63,6 @@ private:
 
     int map_x;
     int map_y;
-
-    bool isPlayerTakeHit;
 
     vector <Monster*> threats_list;
 };

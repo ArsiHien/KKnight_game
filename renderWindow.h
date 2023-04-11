@@ -14,7 +14,6 @@ public:
     void logSDLError(ostream& os, const string &msg, bool fatal);
 
     SDL_Texture* loadIMG(const string &filePath);
-    void renderTexture(SDL_Renderer* ren, const SDL_Rect* clip = nullptr);
     void render(SDL_Texture *mTexture, int x, int y, int realWidth, int realHeight, SDL_Rect* clip = nullptr, double angle = 0.0, SDL_Point* center = nullptr, SDL_RendererFlip flip = SDL_FLIP_NONE );
     SDL_Renderer* getRenderer() const
     {
