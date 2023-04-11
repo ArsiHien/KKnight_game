@@ -10,5 +10,6 @@ CÁCH CHƠI:
  - Nhấn J/K/L để tấn công 
  
  CÁCH TẢI:
- - Tải file .zip ở [Release](https://github.com/duchien714/KKnight_game/releases/tag/v1.0) 
- 
+ - Nhấn Code -> Dowload ZIP
+ - Giải nén và chạy file KKnight.exe
+
