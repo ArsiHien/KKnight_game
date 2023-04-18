@@ -5,7 +5,6 @@
 #include "Enemy.h"
 
 SDL_Event event;
-
 RenderWindow windowScreen;
 SDL_Rect fullScreen = {0, 0, SCREEN_HEIGHT, SCREEN_WIDTH};
 
@@ -41,7 +40,9 @@ int main(int argc, char* argv[])
 {
     windowScreen.initWindow();
 
-    SDL_Texture *tex = windowScreen.loadIMG("gfx/background.png");
+    SDL_Texture *mTexture = windowScreen.loadIMG("gfx/background.png");
+    SDL_Texture *play_again_button = windowScreen.loadIMG("gfx/play_again.png");
+    SDL_Texture *exit_button = windowScreen.loadIMG("gfx/exit.png");
 
     bool gameRunning = true;
     GameMap Map;
@@ -63,16 +64,43 @@ int main(int argc, char* argv[])
             if(event.type == SDL_QUIT) gameRunning = false;
             knight.handleEvent(event);
         }
-
         windowScreen.clearScreen();
-
-        windowScreen.render(tex,0, 0, 1280, 640);
+        windowScreen.render(mTexture,0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         if(knight.isDead())
         {
-            freeTexture(tex);
-            tex = windowScreen.loadIMG("gfx/Game_Over_logo.png");
-            windowScreen.render(tex,0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            freeTexture(mTexture);
+            threats_list.clear();
+            mTexture = windowScreen.loadIMG("gfx/Game_Over_logo.png");
+            windowScreen.render(mTexture,0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            windowScreen.render(play_again_button, 1000, 150, 200, 200);
+            windowScreen.render(exit_button, 100, 150, 200, 200);
+            while(SDL_PollEvent(&event))
+            {
+                if(event.type == SDL_QUIT) gameRunning = false;
+                if (event.type == SDL_MOUSEBUTTONDOWN)
+                {
+                    int x = event.button.x;
+                    int y = event.button.y;
+                    if(pow((x - 100 - 100),2) + pow((y - 150 - 100),2) <= 10000) gameRunning = false;
+                    else if(pow((x - 1000 - 100),2) + pow((y - 150 - 100),2) <= 10000)
+                    {
+                        freeTexture(mTexture);
+                        mTexture = windowScreen.loadIMG("gfx/background.png");
+                        knight = Player();
+                        knight.setClips();
+                        knight.loadPlayerTexture(windowScreen);
+                        threats_list = makeThreatList();
+                    }
+                }
+
+            }
+        }
+        else if(threats_list.size() == 0)
+        {
+            freeTexture(mTexture);
+            mTexture = windowScreen.loadIMG("gfx/win.png");
+            windowScreen.render(mTexture,0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
         else
         {
@@ -89,25 +117,23 @@ int main(int argc, char* argv[])
                 if(p_threat != nullptr)
                 {
                     p_threat->setMapXY(mCamera.x, mCamera.y);
-                    p_threat->doPlayer(map_data);
+                    p_threat->move(knight.getBox(), map_data);
                     p_threat->show(windowScreen);
                     p_threat->isAttacked(knight.getInputType(), knight.getBox(), knight.getCurrentBox(), knight.getStatus());
-                    if(p_threat->getHP() <= 0)
+                    p_threat->drawHP(*windowScreen.getRenderer(), mCamera);
+                    if(p_threat->getDead())
                     {
                         threats_list.erase(threats_list.begin() + i);
                     }
-                    knight.isHitted(p_threat->isAttacking(knight.getInputType(), knight.getBox(), knight.getStatus()));
+                    knight.isHitted(p_threat->isAttacking(knight.getInputType(), knight.getBox()));
                 }
-            }
-            if(threats_list.size() == 0)
-            {
-                freeTexture(tex);
-                tex = windowScreen.loadIMG("gfx/win.png");
-                windowScreen.render(tex,0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             }
         }
         windowScreen.display();
     }
+    freeTexture(mTexture);
+    freeTexture(play_again_button);
+    freeTexture(exit_button);
     windowScreen.quitSDL();
     return 0;
 }
