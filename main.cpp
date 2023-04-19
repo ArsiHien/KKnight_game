@@ -125,7 +125,7 @@ int main(int argc, char* argv[])
                     {
                         threats_list.erase(threats_list.begin() + i);
                     }
-                    knight.isHitted(p_threat->isAttacking(knight.getInputType(), knight.getBox()));
+                    knight.isHitted(p_threat->isAttacking(knight.getInputType(), knight.getBox()), p_threat->getStatus());
                 }
             }
         }

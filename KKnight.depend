@@ -1,23 +1,23 @@
 # depslib dependency file v1.0
-1681191641 source:d:\kknight\main.cpp
+1681878797 source:d:\kknight\main.cpp
 	"Header.h"
 	"RenderWindow.h"
 	"GameMap.h"
 	"Player.h"
 	"Enemy.h"
 
-1681052458 source:d:\kknight\renderwindow.cpp
+1681287601 source:d:\kknight\renderwindow.cpp
 	"renderWindow.h"
 
 1681191082 d:\kknight\renderwindow.h
 	"Header.h"
 
-1681188209 d:\kknight\header.h
+1681727530 d:\kknight\header.h
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
 
-1679833085 source:d:\kknight\tile.cpp
+1681748790 source:d:\kknight\tile.cpp
 	"Tile.h"
 	"Player.h"
 
@@ -34,14 +34,14 @@
 	"RenderWindow.h"
 	"Tile.h"
 
-1681191641 d:\kknight\player.h
+1681878797 d:\kknight\player.h
 	"Header.h"
 	"RenderWindow.h"
 	"Tile.h"
 	"GameMap.h"
 	"Enemy.h"
 
-1681191641 source:d:\kknight\player.cpp
+1681878797 source:d:\kknight\player.cpp
 	"Player.h"
 
 1679757875 source:d:\kknight\imptimer.cpp
@@ -50,12 +50,11 @@
 1679757875 d:\kknight\imptimer.h
 	"Header.h"
 
-1681191641 source:d:\kknight\enemy.cpp
+1681877082 source:d:\kknight\enemy.cpp
 	"Enemy.h"
 
-1681189555 d:\kknight\enemy.h
+1681876979 d:\kknight\enemy.h
 	"Header.h"
 	"Tile.h"
 	"RenderWindow.h"
-	"Player.h"
 

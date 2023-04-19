@@ -10,6 +10,8 @@ const int MONSTER_FRAME_NUM = 39;
 const int MONSTER_SPEED = 1;
 const int MONSTER_GRAVITY_SPEED = 1;
 const int MONSTER_MAX_FALL_SPEED = 8;
+const int MAX_MONSTER_ATTACK = 3;
+const int MAX_MONSTER_DELAY = 120;
 
 class Monster : public RenderWindow{
 public:
@@ -36,6 +38,7 @@ public:
     bool isAttacking (Input i, SDL_Rect player_box);
     void drawHP(SDL_Renderer &ren, SDL_Rect &mCamera);
     bool getDead() {return isDead;}
+    int getStatus() {return status;}
 
     SDL_Rect getBox(){return mBox;}
 private:
@@ -55,6 +58,8 @@ private:
 
     int map_x;
     int map_y;
+    int cntAttacking;
+    int delay;
 
     //vector <Monster*> threats_list;
     int status;

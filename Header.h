@@ -21,7 +21,7 @@ const int TOTAL_TILE_SPRITES = 63*65;
 const int TILE_FILE_SIZE = 1024;
 
 const int GRAVITY_SPEED = 1;
-const int MAX_FALL_SPEED = 8;
+const int MAX_FALL_SPEED = 5;
 
 enum playerType
 {
@@ -36,6 +36,7 @@ struct Input
     int right;
     int defend;
     int jump;
+    int attack;
     int attack1;
     int attack2;
     int attack3;

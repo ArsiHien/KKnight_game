@@ -17,6 +17,8 @@ Monster::Monster()
     x_min = 0;
     x_max = 0;
     isDead = false;
+    cntAttacking = 0;
+    delay = 0;
 
     animations.push_back(idle);
     animations.push_back(run);
@@ -268,9 +270,20 @@ void Monster::isAttacked(Input i, SDL_Rect player_box, SDL_Rect player_currentBo
 bool Monster::isAttacking(Input i, SDL_Rect player_box)
 {
     SDL_Rect Attack_box = {mBox.x + mBox.w/2 - attack.frame_width/2, mBox.y + mBox.h - attack.frame_height, attack.frame_width, attack.frame_height};
+//    if(cntAttacking >= MAX_MONSTER_ATTACK){
+//        delay++;
+//        if(delay >= MAX_MONSTER_DELAY){
+//            delay = 0;
+//            cntAttacking = 0;
+//        }
+//        return false;
+//    }
     if(checkCollision(Attack_box, player_box))
     {
-        input_type.attack = 1;
+        if(i.dead != 1){
+            input_type.attack = 1;
+//            cntAttacking++;
+        }
         if(input_type.hurt == 1) return false;
         if(i.defend == 0)
         {

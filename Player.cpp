@@ -6,6 +6,7 @@ Player::Player()
     status = NONE;
     on_ground = false;
     mTexture = nullptr;
+    direction = 1;
     HP = HP_MAX;
     mVelX = 0;
     mVelY = 0;
@@ -70,7 +71,6 @@ void Player::handleEvent( SDL_Event& event )
             input_type.defend = 0;
             break;
         case SDLK_w:
-            cout << 1  << " " << input_type.jump << endl;
             if(input_type.jump == 0)
             {
                 input_type.jump = 1;
@@ -164,12 +164,7 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
         {
             t += animations[i].amount_of_frame;
         }
-        frame++;
-        if(frame >= defend.amount_of_frame*slow)
-        {
-            frame = 0;
-            input_type.defend = 0;
-        }
+        frame = ++frame%(defend.amount_of_frame*slow);
     }
 //    else if(input_type.hurt == 1)
 //    {
@@ -267,12 +262,7 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
         {
             t += animations[i].amount_of_frame;
         }
-        ++frame;
-        if(frame >= run_attack.amount_of_frame*slow || input_type.run == 0)
-        {
-            frame = 0;
-            input_type.run_attack = 0;
-        }
+        frame = ++frame%(run.amount_of_frame*slow);
     }
     else if(input_type.run == 1)
     {
@@ -284,12 +274,7 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
         {
             t += animations[i].amount_of_frame;
         }
-        frame++;
-        if(frame >= run.amount_of_frame*slow)
-        {
-            frame = 0;
-            input_type.run = 0;
-        }
+        frame = ++frame%(run.amount_of_frame*slow);
     }
     else
     {
@@ -327,6 +312,12 @@ void Player::doPlayer(Tile *map_data)
     {
         mVelY = MAX_FALL_SPEED;
     }
+//    if(input_type.hurt == 1){
+//        mBox.x += 0.5*PLAYER_SPEED*direction;
+//        if(( mBox.x < 0 ) || ( mBox.x + mBox.w > LEVEL_WIDTH ) || touchesWall( map_data ) ){
+//            mBox.x -= 0.5*PLAYER_SPEED*direction;
+//        }
+//    }
     if(input_type.run == 1)
     {
         if(input_type.left == 1)
@@ -346,6 +337,9 @@ void Player::doPlayer(Tile *map_data)
             on_ground = false;
         }
         input_type.jump = 0;
+    }
+    if(HP <= 0){
+        mVelX = 0;
     }
     checkToMap(map_data);
 }
@@ -440,12 +434,14 @@ void Player::drawHP(SDL_Renderer &ren, SDL_Rect &mCamera)
     }
 }
 
-void Player::isHitted(bool ok)
+void Player::isHitted(bool hitted, int enemy_status)
 {
-    if(ok)
+    if(hitted)
     {
-        //HP--;
+        HP--;
         if(input_type.hurt == 0) input_type.hurt = 1;
+        if(enemy_status == RIGHT) direction = 1;
+        else direction = -1;
     }
 }
 

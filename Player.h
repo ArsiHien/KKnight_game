@@ -30,7 +30,7 @@ public:
     void centerPlayerOnMap(SDL_Rect &mCamera);
 
     void drawHP(SDL_Renderer &ren, SDL_Rect &mCamera);
-    void isHitted(bool ok);
+    void isHitted(bool hitted, int enemy_status);
     bool isDead();
 
     SDL_Rect getCurrentBox() {return currentBox;}
@@ -48,6 +48,7 @@ private:
     Input input_type;
     int status;
     int frame;
+    int direction;
     bool on_ground;
     int mVelX, mVelY;
     int HP;
