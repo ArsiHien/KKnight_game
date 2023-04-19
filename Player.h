@@ -7,9 +7,9 @@
 #include "GameMap.h"
 #include "Enemy.h"
 
-const int PLAYER_SPEED = 4;
+const int PLAYER_SPEED = 3;
 const int PLAYR_JUMP_VAL = 28;
-const int SHEET_WIDTH = 1109;
+const int HP_MAX = 500;
 const int TOTAL_FRAME = 49;
 
 class Player : public RenderWindow
@@ -56,10 +56,10 @@ private:
     Animation attack1 = Animation(1, 5, 160, 96, 8, 32, 64, 16);
     Animation attack2 = Animation(2, 4, 160, 96, 8, 32, 64, 16);
     Animation attack3 = Animation(3, 4, 160, 80, 12, 16, 64, 0);
-    Animation dead = Animation(4, 6, 160, 80);
+    Animation dead = Animation(4, 6, 160, 80, 36, 0, 64);
     Animation defend = Animation(5, 5, 64, 80, 8);
-    Animation hurt = Animation(6, 2, 64, 80);
-    Animation jump = Animation(7, 6, 112, 80, 8, 16, 16, 0);
+    Animation hurt = Animation(6, 2, 64, 80, 24);
+    Animation jump = Animation(7, 6, 112, 80, 16, 16, 16, 0);
     Animation run = Animation(8, 7, 80, 80, 12);
     Animation run_attack = Animation(9, 6, 128, 96, 12, 20, 16);
     vector <Animation> animations;

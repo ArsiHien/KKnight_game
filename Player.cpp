@@ -5,10 +5,10 @@ Player::Player()
     frame = 0;
     status = NONE;
     on_ground = false;
-    HP = 500;
+    mTexture = nullptr;
+    HP = HP_MAX;
     mVelX = 0;
     mVelY = 0;
-
     animations.push_back(idle);
     animations.push_back(attack1);
     animations.push_back(attack2);
@@ -50,6 +50,7 @@ void Player::loadPlayerTexture(RenderWindow &window)
 
 void Player::handleEvent( SDL_Event& event )
 {
+    if(HP <= 0) return;
     if(event.type == SDL_KEYDOWN)
     {
         switch(event.key.keysym.sym)
@@ -69,6 +70,7 @@ void Player::handleEvent( SDL_Event& event )
             input_type.defend = 0;
             break;
         case SDLK_w:
+            cout << 1  << " " << input_type.jump << endl;
             if(input_type.jump == 0)
             {
                 input_type.jump = 1;
@@ -134,7 +136,60 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
 {
     int dxr = 0, dxl = 0, dy = 0, slow = 1, t = 0;
     currentBox = mBox;
-    if(input_type.attack1 == 1)
+    if(HP <= 0)
+    {
+        dxr = dead.denta_x_right, dxl = dead.denta_x_left, dy = dead.denta_y;
+        slow = dead.slow_down;
+        currentBox.w = dead.frame_width;
+        currentBox.h = dead.frame_height;
+        for(int i = 0; i <dead.index; i++)
+        {
+            t += animations[i].amount_of_frame;
+        }
+        frame++;
+        if(frame >= dead.amount_of_frame*slow)
+        {
+            frame = 0;
+            HP = 0;
+            input_type.dead = 1;
+        }
+    }
+    else if(input_type.defend == 1)
+    {
+        dxr = defend.denta_x_right, dxl = defend.denta_x_left, dy = defend.denta_y;
+        slow = defend.slow_down;
+        currentBox.w = defend.frame_width;
+        currentBox.h = defend.frame_height;
+        for(int i = 0; i <defend.index; i++)
+        {
+            t += animations[i].amount_of_frame;
+        }
+        frame++;
+        if(frame >= defend.amount_of_frame*slow)
+        {
+            frame = 0;
+            input_type.defend = 0;
+        }
+    }
+//    else if(input_type.hurt == 1)
+//    {
+//        dxr = hurt.denta_x_right, dxl = hurt.denta_x_left, dy = hurt.denta_y;
+//        slow = hurt.slow_down;
+//        currentBox.w = hurt.frame_width;
+//        currentBox.h = hurt.frame_height;
+//        for(int i = 0; i <hurt.index; i++)
+//        {
+//            t += animations[i].amount_of_frame;
+//        }
+//        frame++;
+//        cout << 3 << " ";
+//        if(frame >= hurt.amount_of_frame*slow)
+//        {
+//            frame = 0;
+//            input_type.hurt = 0;
+//        }
+//    }
+    else if(input_type.attack1 == 1)
     {
         dxr = attack1.denta_x_right, dxl = attack1.denta_x_left, dy = attack1.denta_y;
         slow = attack1.slow_down;
@@ -145,7 +200,7 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
             t += animations[i].amount_of_frame;
         }
         frame++;
-        if(frame == attack1.amount_of_frame*slow)
+        if(frame >= attack1.amount_of_frame*slow)
         {
             frame = 0;
             input_type.attack1 = 0;
@@ -162,7 +217,7 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
             t += animations[i].amount_of_frame;
         }
         frame++;
-        if(frame == attack2.amount_of_frame*slow)
+        if(frame >= attack2.amount_of_frame*slow)
         {
             frame = 0;
             input_type.attack2 = 0;
@@ -179,47 +234,11 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
             t += animations[i].amount_of_frame;
         }
         frame++;
-        if(frame == attack3.amount_of_frame*slow)
+        if(frame >= attack3.amount_of_frame*slow)
         {
             frame = 0;
             input_type.attack3 = 0;
         }
-    }
-    else if(input_type.dead == 1)
-    {
-        dxr = dead.denta_x_right, dxl = dead.denta_x_left, dy = dead.denta_y;
-        slow = dead.slow_down;
-        currentBox.w = dead.frame_width;
-        currentBox.h = dead.frame_height;
-        for(int i = 0; i <dead.index; i++)
-        {
-            t += animations[i].amount_of_frame;
-        }
-        frame = ++frame%(dead.amount_of_frame*slow);
-    }
-    else if(input_type.defend == 1)
-    {
-        dxr = defend.denta_x_right, dxl = defend.denta_x_left, dy = defend.denta_y;
-        slow = defend.slow_down;
-        currentBox.w = defend.frame_width;
-        currentBox.h = defend.frame_height;
-        for(int i = 0; i <defend.index; i++)
-        {
-            t += animations[i].amount_of_frame;
-        }
-        frame = ++frame%(defend.amount_of_frame*slow);
-    }
-    else if(input_type.hurt == 1)
-    {
-        dxr = hurt.denta_x_right, dxl = hurt.denta_x_left, dy = hurt.denta_y;
-        slow = hurt.slow_down;
-        currentBox.w = hurt.frame_width;
-        currentBox.h = hurt.frame_height;
-        for(int i = 0; i <hurt.index; i++)
-        {
-            t += animations[i].amount_of_frame;
-        }
-        frame = ++frame%(hurt.amount_of_frame*slow);
     }
     else if(!on_ground)
     {
@@ -232,7 +251,7 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
             t += animations[i].amount_of_frame;
         }
         frame++;
-        if(frame == jump.amount_of_frame*slow)
+        if(frame >= jump.amount_of_frame*slow)
         {
             frame = 0;
             input_type.jump = 0;
@@ -249,7 +268,7 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
             t += animations[i].amount_of_frame;
         }
         ++frame;
-        if(frame == run_attack.amount_of_frame*slow || input_type.run == 0)
+        if(frame >= run_attack.amount_of_frame*slow || input_type.run == 0)
         {
             frame = 0;
             input_type.run_attack = 0;
@@ -265,7 +284,12 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
         {
             t += animations[i].amount_of_frame;
         }
-        frame = ++frame%(run.amount_of_frame*slow);
+        frame++;
+        if(frame >= run.amount_of_frame*slow)
+        {
+            frame = 0;
+            input_type.run = 0;
+        }
     }
     else
     {
@@ -277,9 +301,13 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
         {
             t += animations[i].amount_of_frame;
         }
-        frame = ++frame%(idle.amount_of_frame*slow);
+        frame++;
+        if(frame >= idle.amount_of_frame*slow)
+        {
+            frame = 0;
+            input_type.idle = 0;
+        }
     }
-
     SDL_Rect* current_clip = &m_playerClips[t + frame/slow];
     if(status == RIGHT || status == NONE)
     {
@@ -392,22 +420,37 @@ bool Player::touchesWall(Tile *map_data)
 
 void Player::drawHP(SDL_Renderer &ren, SDL_Rect &mCamera)
 {
-    SDL_Rect health_box = {mBox.x + mBox.w/2 - HP/16 - mCamera.x, mBox.y - 10 - mCamera.y, HP/8, 5};
+    SDL_Rect health_box = {mBox.x + mBox.w/2 - HP_MAX/20 - mCamera.x, mBox.y - 10 - mCamera.y, HP/10, 6};
 
-    SDL_SetRenderDrawColor(&ren, 255, 0, 0, 255);
-    SDL_RenderFillRect(&ren, &health_box);
-
-    SDL_SetRenderDrawColor(&ren, 0, 255, 0, 255);
-    SDL_RenderDrawRect(&ren, &health_box);
+    if(HP > 0)
+    {
+        SDL_SetRenderDrawColor(&ren, 255, 0, 0, 255);
+        SDL_RenderFillRect(&ren, &health_box);
+    }
+    SDL_SetRenderDrawColor(&ren, 0, 250, 154, 255);
+    for(int i = 0; i < 5; i++)
+    {
+        health_box = {mBox.x + mBox.w/2 - HP_MAX/20 - mCamera.x + i*HP_MAX/50, mBox.y - 10 - mCamera.y, HP_MAX/50, 6};
+        if(HP <= 0)
+        {
+            if(status == LEFT) health_box.x = mBox.x + mBox.w/2 - HP_MAX/20 - mCamera.x + i*HP_MAX/50;
+            else health_box.x = mBox.x + mBox.w/2 - mCamera.x + i*HP_MAX/50;
+        }
+        SDL_RenderDrawRect(&ren, &health_box);
+    }
 }
 
 void Player::isHitted(bool ok)
 {
-    if(ok) HP--;
+    if(ok)
+    {
+        //HP--;
+        if(input_type.hurt == 0) input_type.hurt = 1;
+    }
 }
 
 bool Player::isDead()
 {
-    if(HP <= 0 || ( mBox.y + mBox.h > LEVEL_HEIGHT )) return true;
+    if(input_type.dead == 1 || ( mBox.y + mBox.h > LEVEL_HEIGHT )) return true;
     else return false;
 }
