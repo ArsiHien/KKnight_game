@@ -1,23 +1,23 @@
-#ifndef ENEMY_H_INCLUDED
-#define ENEMY_H_INCLUDED
+#ifndef FLYINGMONSTER_H_INCLUDED
+#define FLYINGMONSTER_H_INCLUDED
 
 #include "Header.h"
 #include "Tile.h"
 #include "RenderWindow.h"
 
-const int MONSTER_FRAME_NUM = 39;
+const int FMONSTER_FRAME_NUM = 40;
 
-const int MONSTER_SPEED = 1;
-const int MONSTER_GRAVITY_SPEED = 1;
-const int MONSTER_MAX_FALL_SPEED = 8;
-const int MAX_MONSTER_ATTACK = 3;
-const int MAX_MONSTER_DELAY = 120;
+const int FMONSTER_SPEED = 1;
+const int FMONSTER_GRAVITY_SPEED = 1;
+const int FMONSTER_MAX_FALL_SPEED = 8;
+const int FMAX_MONSTER_ATTACK = 3;
+const int FMAX_MONSTER_DELAY = 120;
 
-class Monster {
+class FlyingMonster {
 public:
     public:
-    Monster();
-    ~Monster();
+    FlyingMonster();
+    ~FlyingMonster();
 
     void set_x_pos(const int& xp);
 //    void set_y_pos(const int& yp) {y_pos = yp;}
@@ -32,7 +32,7 @@ public:
     bool touchesWall(Tile *map_data);
     bool checkCollision(SDL_Rect a, SDL_Rect b);
 
-    //dwvector <Monster*> makeThreatList(SDL_Renderer* ren);
+    //dwvector <FlyingMonster*> makeThreatList(SDL_Renderer* ren);
 
     void isAttacked(Input i, SDL_Rect player_box, SDL_Rect player_currentBox, int player_status);
     bool isAttacking (Input i, SDL_Rect player_box);
@@ -51,7 +51,7 @@ private:
     int x_min, x_max;
     int push;
 
-    SDL_Rect Monster_Clips[MONSTER_FRAME_NUM];
+    SDL_Rect Monster_Clips[FMONSTER_FRAME_NUM];
     int frame;
 
     bool on_ground;
@@ -65,13 +65,12 @@ private:
     int status;
     Input input_type;
     bool isDead;
-    Animation idle = Animation(0, 8, 96, 96, 8);
-    Animation run = Animation(1, 8, 120, 96, 8, 0, 15);
-    Animation attack = Animation(2, 10, 216, 144, 8, 0, 108, 48);
-    Animation hurt = Animation(3, 3, 96, 96, 8);
-    Animation dead = Animation(4, 10, 96, 96, 8);
+    Animation idle = Animation(0, 8, 96, 96);
+    Animation run = Animation(1, 7, 96, 96);
+    Animation attack = Animation(2, 10, 96, 96);
+    Animation dead = Animation(3, 11, 96, 96);
+    Animation hurt = Animation(4, 4, 96, 96);
     vector <Animation> animations;
 };
 
-#endif // ENEMY_H_INCLUDED
-
+#endif // FLYINGMONSTER_H_INCLUDED

@@ -32,8 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="DarkWarrior.cpp" />
+		<Unit filename="DarkWarrior.h" />
 		<Unit filename="Enemy.cpp" />
 		<Unit filename="Enemy.h" />
+		<Unit filename="FlyingMonster.cpp" />
+		<Unit filename="FlyingMonster.h" />
 		<Unit filename="GameMap.cpp" />
 		<Unit filename="GameMap.h" />
 		<Unit filename="Header.h" />
@@ -43,6 +47,8 @@
 		<Unit filename="RenderWindow.h" />
 		<Unit filename="Tile.cpp" />
 		<Unit filename="Tile.h" />
+		<Unit filename="Timer.cpp" />
+		<Unit filename="Timer.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

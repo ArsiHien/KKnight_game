@@ -12,7 +12,7 @@ const int PLAYR_JUMP_VAL = 28;
 const int HP_MAX = 500;
 const int TOTAL_FRAME = 49;
 
-class Player : public RenderWindow
+class Player
 {
 public:
     Player();

@@ -8,7 +8,7 @@ void RenderWindow::initWindow()
 
     if (m_window == nullptr) logSDLError(cout, "CreateWindow", true);
 
-    m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED /*| SDL_RENDERER_PRESENTVSYNC*/);
 
     if (m_renderer == nullptr) logSDLError(cout, "CreateRenderer", true);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");

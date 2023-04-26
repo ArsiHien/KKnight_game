@@ -1,6 +1,6 @@
-#include "Enemy.h"
+#include "FlyingMonster.h"
 
-Monster::Monster()
+FlyingMonster::FlyingMonster()
 {
     HP = 150;
     on_ground = false;
@@ -23,25 +23,25 @@ Monster::Monster()
     animations.push_back(idle);
     animations.push_back(run);
     animations.push_back(attack);
-    animations.push_back(hurt);
     animations.push_back(dead);
+    animations.push_back(hurt);
 }
 
-Monster::~Monster()
+FlyingMonster::~FlyingMonster()
 {
 
 }
 
-void Monster::loadMonsterTexture(RenderWindow &window)
+void FlyingMonster::loadMonsterTexture(RenderWindow &window)
 {
-    mTexture = window.loadIMG("gfx/Sprite_monsterS.png");
+    mTexture = window.loadIMG("gfx/monster2.png");
     if(mTexture == nullptr)
     {
-        cout << "Failed to load monster texture\n";
+        cout << "Failed to load fmonster texture\n";
     }
 }
 
-void Monster::set_clips()
+void FlyingMonster::set_clips()
 {
     int n = 0;
     for(int i = 0; i < (int)animations.size(); i++)
@@ -49,7 +49,7 @@ void Monster::set_clips()
         for(int j = 0; j < animations[i].amount_of_frame; j++)
         {
             Monster_Clips[n].x = j*animations[i].frame_width;
-            Monster_Clips[n].y = (i+1)*144 - animations[i].frame_height;
+            Monster_Clips[n].y = (i+1)*96 - animations[i].frame_height;
             Monster_Clips[n].h = animations[i].frame_height;
             Monster_Clips[n].w = animations[i].frame_width;
             n++;
@@ -57,14 +57,14 @@ void Monster::set_clips()
     }
 }
 
-void Monster::set_x_pos(const int &xp)
+void FlyingMonster::set_x_pos(const int &xp)
 {
     mBox.x = xp;
     x_min = xp - 100;
     x_max = xp + 100;
 }
 
-void Monster::show(RenderWindow &window)
+void FlyingMonster::show(RenderWindow &window)
 {
     int dxr = 0, dxl = 0, dy = 0, slow = 1, t = 0;
 //    mBox.x = mBox.x;
@@ -161,13 +161,13 @@ void Monster::show(RenderWindow &window)
     }
 }
 
-void Monster::move(SDL_Rect player_box, Tile* map_data)
+void FlyingMonster::move(SDL_Rect player_box, Tile* map_data)
 {
     mVelX = 0;
-    mVelY += MONSTER_GRAVITY_SPEED;
-    if(mVelY >= MONSTER_MAX_FALL_SPEED)
+    mVelY += FMONSTER_GRAVITY_SPEED;
+    if(mVelY >= FMONSTER_MAX_FALL_SPEED)
     {
-        mVelY = MONSTER_MAX_FALL_SPEED;
+        mVelY = FMONSTER_MAX_FALL_SPEED;
     }
     input_type.run = 1;
     input_type.right = 0;
@@ -194,13 +194,13 @@ void Monster::move(SDL_Rect player_box, Tile* map_data)
     if(input_type.attack == 1) mVelX = 0;
     else if(input_type.left == 1)
     {
-        mVelX = -MONSTER_SPEED;
+        mVelX = -FMONSTER_SPEED;
     }
-    else if(input_type.right == 1) mVelX = MONSTER_SPEED;
+    else if(input_type.right == 1) mVelX = FMONSTER_SPEED;
     checkToMap(map_data);
 }
 
-void Monster::checkToMap(Tile *map_data)
+void FlyingMonster::checkToMap(Tile *map_data)
 {
     mBox.x += mVelX;
     if( ( mBox.x < 0 ) || (mBox.x < x_min) || (mBox.x > x_max) || ( mBox.x + mBox.w > LEVEL_WIDTH ) || touchesWall( map_data ) )
@@ -215,7 +215,7 @@ void Monster::checkToMap(Tile *map_data)
     }
 }
 
-bool Monster::checkCollision( SDL_Rect a, SDL_Rect b)
+bool FlyingMonster::checkCollision( SDL_Rect a, SDL_Rect b)
 {
     int leftA = a.x, leftB = b.x;
     int rightA = a.x + a.w, rightB = b.x + b.w;
@@ -229,7 +229,7 @@ bool Monster::checkCollision( SDL_Rect a, SDL_Rect b)
     return true;
 }
 
-bool Monster::touchesWall(Tile *map_data)
+bool FlyingMonster::touchesWall(Tile *map_data)
 {
     for( int i = 0; i < TOTAL_TILES; ++i )
     {
@@ -244,7 +244,7 @@ bool Monster::touchesWall(Tile *map_data)
     return false;
 }
 
-void Monster::isAttacked(Input i, SDL_Rect player_box, SDL_Rect player_currentBox, int player_status)
+void FlyingMonster::isAttacked(Input i, SDL_Rect player_box, SDL_Rect player_currentBox, int player_status)
 {
     if(i.attack1 == 1 || i.attack2 == 1 || i.attack3 == 1)
     {
@@ -267,7 +267,7 @@ void Monster::isAttacked(Input i, SDL_Rect player_box, SDL_Rect player_currentBo
     }
 }
 
-bool Monster::isAttacking(Input i, SDL_Rect player_box)
+bool FlyingMonster::isAttacking(Input i, SDL_Rect player_box)
 {
     SDL_Rect Attack_box = {mBox.x + mBox.w/2 - attack.frame_width/2, mBox.y + mBox.h - attack.frame_height, attack.frame_width, attack.frame_height};
 //    if(cntAttacking >= MAX_MONSTER_ATTACK){
@@ -308,7 +308,7 @@ bool Monster::isAttacking(Input i, SDL_Rect player_box)
     return false;
 }
 
-void Monster::drawHP(SDL_Renderer &ren, SDL_Rect &mCamera)
+void FlyingMonster::drawHP(SDL_Renderer &ren, SDL_Rect &mCamera)
 {
     if(HP <= 0) return;
     SDL_Rect health_box = {mBox.x + mBox.w/2 - HP/10 - mCamera.x, mBox.y - 5 - mCamera.y, HP/5, 5};

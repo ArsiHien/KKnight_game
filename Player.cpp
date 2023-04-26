@@ -438,7 +438,7 @@ void Player::isHitted(bool hitted, int enemy_status)
 {
     if(hitted)
     {
-        HP--;
+        //HP--;
         if(input_type.hurt == 0) input_type.hurt = 1;
         if(enemy_status == RIGHT) direction = 1;
         else direction = -1;

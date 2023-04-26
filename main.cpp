@@ -1,8 +1,11 @@
 #include "Header.h"
 #include "RenderWindow.h"
+#include "Timer.h"
 #include "GameMap.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "FlyingMonster.h"
+
 
 SDL_Event event;
 RenderWindow windowScreen;
@@ -27,6 +30,25 @@ vector <Monster*> makeThreatList()
     return list_threats;
 }
 
+vector <FlyingMonster*> FmakeThreatList()
+{
+    vector <FlyingMonster*> list_threats;
+    FlyingMonster* threats_objs = new FlyingMonster[3];
+
+    for(int i = 0; i < 3; i++)
+    {
+        FlyingMonster* p_threat = (threats_objs + i);
+        if(p_threat != nullptr)
+        {
+            p_threat->loadMonsterTexture(windowScreen);
+            p_threat->set_clips();
+            p_threat->set_x_pos(300 + i*500);;
+            list_threats.push_back(p_threat);
+        }
+    }
+    return list_threats;
+}
+
 void freeTexture(SDL_Texture *Texture)
 {
     if(Texture != nullptr)
@@ -38,6 +60,7 @@ void freeTexture(SDL_Texture *Texture)
 
 int main(int argc, char* argv[])
 {
+    LTimer capTimer;
     windowScreen.initWindow();
 
     SDL_Texture *mTexture = windowScreen.loadIMG("gfx/background.png");
@@ -56,6 +79,7 @@ int main(int argc, char* argv[])
     knight.loadPlayerTexture(windowScreen);
 
     vector <Monster*> threats_list = makeThreatList();
+    vector <FlyingMonster*> fthreats_list = FmakeThreatList();
 
     while(gameRunning)
     {
@@ -96,7 +120,7 @@ int main(int argc, char* argv[])
 
             }
         }
-        else if(threats_list.size() == 0)
+        else if(threats_list.size() == 0 && fthreats_list.size() == 0)
         {
             freeTexture(mTexture);
             mTexture = windowScreen.loadIMG("gfx/win.png");
@@ -128,7 +152,32 @@ int main(int argc, char* argv[])
                     knight.isHitted(p_threat->isAttacking(knight.getInputType(), knight.getBox()), p_threat->getStatus());
                 }
             }
+
+            for(int i = 0; i < fthreats_list.size(); i++)
+            {
+                FlyingMonster* p_threat = fthreats_list.at(i);
+                if(p_threat != nullptr)
+                {
+                    p_threat->setMapXY(mCamera.x, mCamera.y);
+                    p_threat->move(knight.getBox(), map_data);
+                    p_threat->show(windowScreen);
+                    p_threat->isAttacked(knight.getInputType(), knight.getBox(), knight.getCurrentBox(), knight.getStatus());
+                    p_threat->drawHP(*windowScreen.getRenderer(), mCamera);
+                    if(p_threat->getDead())
+                    {
+                        fthreats_list.erase(fthreats_list.begin() + i);
+                    }
+                    knight.isHitted(p_threat->isAttacking(knight.getInputType(), knight.getBox()), p_threat->getStatus());
+                }
+            }
         }
+         int frameTicks = capTimer.getTicks();
+                if( frameTicks < SCREEN_TICKS_PER_FRAME )
+                {
+                    //Wait remaining time
+                    SDL_Delay( SCREEN_TICKS_PER_FRAME - frameTicks );
+                }
+
         windowScreen.display();
     }
     freeTexture(mTexture);
