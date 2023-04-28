@@ -28,7 +28,6 @@ const int GRAVITY_SPEED = 1;
 const int MAX_FALL_SPEED = 7;
 static int FPS = 0;
 
-const double PI = 3.1415926535897932384626433832795;
 const int SCREEN_FPS = 120;
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 

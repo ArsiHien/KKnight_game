@@ -2,7 +2,7 @@
 
 FlyingMonster::FlyingMonster()
 {
-    HP = 150;
+    HP = 250;
     on_ground = false;
     frame = 0;
     status = LEFT;
@@ -19,6 +19,8 @@ FlyingMonster::FlyingMonster()
     isDead = false;
     cntAttacking = 0;
     delay = 0;
+    cntDead = 0;
+    mTexture = nullptr;
 
     animations.push_back(idle);
     animations.push_back(run);
@@ -34,11 +36,15 @@ FlyingMonster::~FlyingMonster()
 
 void FlyingMonster::loadMonsterTexture(RenderWindow &window)
 {
-    mTexture = window.loadIMG("gfx/monster2.png");
+    mTexture = window.loadIMG("gfx/fm.png");
     if(mTexture == nullptr)
     {
         cout << "Failed to load fmonster texture\n";
     }
+    //bull->mTexture = window.loadIMG("gfx/bullet.png");
+//    if(bull->mTexture == nullptr){
+//        cout << "Failed to load bullet texture\n";
+//    }
 }
 
 void FlyingMonster::set_clips()
@@ -63,7 +69,6 @@ void FlyingMonster::set_x_pos(const int &xp)
     x_min = xp - 100;
     x_max = xp + 100;
 }
-
 void FlyingMonster::show(RenderWindow &window)
 {
     int dxr = 0, dxl = 0, dy = 0, slow = 1, t = 0;
@@ -84,8 +89,13 @@ void FlyingMonster::show(RenderWindow &window)
         frame++;
         if(frame >= dead.amount_of_frame*slow)
         {
-            frame = 0;
-            isDead = true;
+            if(cntDead >= 14){
+                isDead = true;
+            }
+            else{
+                frame = dead.amount_of_frame*slow - 24;
+                cntDead++;
+            }
         }
     }
     else if(input_type.hurt == 1)

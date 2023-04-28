@@ -5,13 +5,24 @@
 #include "Tile.h"
 #include "RenderWindow.h"
 
-const int FMONSTER_FRAME_NUM = 40;
+const int FMONSTER_FRAME_NUM = 42;
 
 const int FMONSTER_SPEED = 1;
 const int FMONSTER_GRAVITY_SPEED = 1;
 const int FMONSTER_MAX_FALL_SPEED = 8;
 const int FMAX_MONSTER_ATTACK = 3;
 const int FMAX_MONSTER_DELAY = 120;
+const int BULLET_FRAMES = 4;
+
+struct Bullet{
+    int x;
+    int mVelX;
+    SDL_Rect mBox;
+    int life;
+    Bullet *next;
+    SDL_Rect BulletClips[BULLET_FRAMES];
+    SDL_Texture *mTexture;
+};
 
 class FlyingMonster {
 public:
@@ -32,7 +43,7 @@ public:
     bool touchesWall(Tile *map_data);
     bool checkCollision(SDL_Rect a, SDL_Rect b);
 
-    //dwvector <FlyingMonster*> makeThreatList(SDL_Renderer* ren);
+    //vector <FlyingMonster*> makeThreatList(SDL_Renderer* ren);
 
     void isAttacked(Input i, SDL_Rect player_box, SDL_Rect player_currentBox, int player_status);
     bool isAttacking (Input i, SDL_Rect player_box);
@@ -60,16 +71,18 @@ private:
     int map_y;
     int cntAttacking;
     int delay;
+    int cntDead;
+    Bullet *bull;
 
     //vector <Monster*> threats_list;
     int status;
     Input input_type;
     bool isDead;
-    Animation idle = Animation(0, 8, 96, 96);
-    Animation run = Animation(1, 7, 96, 96);
-    Animation attack = Animation(2, 10, 96, 96);
-    Animation dead = Animation(3, 11, 96, 96);
-    Animation hurt = Animation(4, 4, 96, 96);
+    Animation idle = Animation(0, 8, 96, 96, 16);
+    Animation run = Animation(1, 7, 96, 96, 8);
+    Animation attack = Animation(2, 10, 96, 96, 8);
+    Animation dead = Animation(3, 13, 96, 96, 8);
+    Animation hurt = Animation(4, 4, 96, 96, 12);
     vector <Animation> animations;
 };
 

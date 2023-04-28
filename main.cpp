@@ -33,9 +33,9 @@ vector <Monster*> makeThreatList()
 vector <FlyingMonster*> FmakeThreatList()
 {
     vector <FlyingMonster*> list_threats;
-    FlyingMonster* threats_objs = new FlyingMonster[3];
+    FlyingMonster* threats_objs = new FlyingMonster[1];
 
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < 1; i++)
     {
         FlyingMonster* p_threat = (threats_objs + i);
         if(p_threat != nullptr)

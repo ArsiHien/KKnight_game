@@ -84,7 +84,7 @@ void Monster::show(RenderWindow &window)
         frame++;
         if(frame >= dead.amount_of_frame*slow)
         {
-            frame = 0;
+            frame = dead.amount_of_frame*slow;
             isDead = true;
         }
     }
