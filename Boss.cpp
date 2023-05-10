@@ -9,12 +9,11 @@ Boss::Boss(const int &xp, const int &yp, SDL_Texture *p_texture)
     sFrame = 0;
     status = LEFT;
     mBox = {xp, yp, 256, 256};
-    pb = mBox;
+    rPlayerBox = mBox;
     x_min = xp - 500;
     x_max = xp + 500;
     input_type.left = 0;
     input_type.right = 0;
-    //x_pos = 0; y_pos = 0;
     mVelX = 0;
     mVelY = 0;
     isDead = false;
@@ -374,11 +373,11 @@ void Boss::showSkillBoss(RenderWindow &window, SDL_Rect player_box, SDL_Rect mCa
     if(input_type.skills2 == 0) return;
     if(sFrame == 0)
     {
-        pb.x = player_box.x;
-        pb.y = player_box.y;
+        rPlayerBox.x = player_box.x;
+        rPlayerBox.y = player_box.y;
     }
     sFrame++;
-    if(sFrame%4 == 0 && sFrame >= 7*spell.slow_down && sFrame <= 12*spell.slow_down && (pb.x + 64 - 80 <= (player_box.x + player_box.w/2)) && (pb.x + 64 + 128 - 80 >= (player_box.x + player_box.w/2)))
+    if(sFrame%4 == 0 && sFrame >= 7*spell.slow_down && sFrame <= 12*spell.slow_down && (rPlayerBox.x + 64 - 80 <= (player_box.x + player_box.w/2)) && (rPlayerBox.x + 64 + 128 - 80 >= (player_box.x + player_box.w/2)))
     {
         skillHitting = true;
     }
@@ -394,7 +393,7 @@ void Boss::showSkillBoss(RenderWindow &window, SDL_Rect player_box, SDL_Rect mCa
     {
         t += animations[i].amount_of_frame;
     }
-    window.render(mTexture, pb.x - mCamera.x - 80, pb.y - mCamera.y - 170, pb.w, pb.h, &Boss_Clips[t + sFrame/spell.slow_down]);
+    window.render(mTexture, rPlayerBox.x - mCamera.x - 80, rPlayerBox.y - mCamera.y - 170, rPlayerBox.w, rPlayerBox.h, &Boss_Clips[t + sFrame/spell.slow_down]);
 }
 
 void Boss::drawHP(SDL_Renderer &ren, SDL_Rect &mCamera)

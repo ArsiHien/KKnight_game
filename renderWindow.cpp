@@ -16,8 +16,8 @@ bool RenderWindow::initWindow()
         return false;
     }
     SDL_Surface *icon = IMG_Load("gfx/icon.png");
-            SDL_SetWindowIcon(m_window, icon);
-            SDL_FreeSurface(icon);
+    SDL_SetWindowIcon(m_window, icon);
+    SDL_FreeSurface(icon);
     m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED /*| SDL_RENDERER_PRESENTVSYNC*/);
 
     if (m_renderer == nullptr)

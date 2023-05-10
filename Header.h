@@ -28,15 +28,6 @@ const int TOTAL_TILE_SPRITES = 63*65;
 const int TILE_FILE_SIZE = 1024;
 const int ENEMY_TILE_TYPE = 2193;
 
-//const int LEVEL_WIDTH = 227*16;
-//const int LEVEL_HEIGHT = 40*16;
-//
-//const int TOTAL_TILES = 40*227;
-//const int TOTAL_TILE_SPRITES = 63*65;
-//const int TILE_FILE_SIZE = 1024;
-//const int ENEMY_TILE_TYPE = 2193;
-
-
 const int GRAVITY_SPEED = 1;
 const int MAX_FALL_SPEED = 7;
 

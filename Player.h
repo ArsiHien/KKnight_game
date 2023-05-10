@@ -5,7 +5,6 @@
 #include "RenderWindow.h"
 #include "Tile.h"
 #include "GameMap.h"
-#include "Enemy.h"
 
 const int PLAYER_SPEED = 2;
 const int PLAYR_JUMP_VAL = 28;
@@ -36,10 +35,22 @@ public:
     void isHittedByBullet(bool isBHitted, RenderWindow &window, SDL_Rect &mCamera);
     bool isDead();
 
-    SDL_Rect getCurrentBox() {return currentBox;}
-    SDL_Rect getBox() {return mBox;}
-    Input getInputType(){return input_type;}
-    int getStatus() {return status;}
+    SDL_Rect getCurrentBox()
+    {
+        return currentBox;
+    }
+    SDL_Rect getBox()
+    {
+        return mBox;
+    }
+    Input getInputType()
+    {
+        return input_type;
+    }
+    int getStatus()
+    {
+        return status;
+    }
 
 private:
     SDL_Texture *mTexture, *hpTexture;

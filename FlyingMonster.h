@@ -25,7 +25,8 @@ const int EXPLOSION_TEXTURE_WIDTH = 360;
 const int EXPLOSION_HEIGHT = 36;
 const int EXPLOSION_WIDTH = 36;
 
-class Bullet{
+class Bullet
+{
 public:
     Bullet(const int &x = 0, const int &y = 0, SDL_Texture *p_texture = nullptr, SDL_Texture *e_tex = nullptr, const int &monster_status = 0);
     void setClips();
@@ -33,16 +34,25 @@ public:
     void handleMove(SDL_Rect &mCamera);
     bool isHitting(Input i, SDL_Rect player_box, SDL_Rect &mCamera, int player_status);
     bool checkCollision(SDL_Rect a, SDL_Rect b);
-    SDL_Rect getBox() const {return mBox;}
-    int getLife() const {return life;}
-    int getStatus() const {return mStatus;}
+    SDL_Rect getBox() const
+    {
+        return mBox;
+    }
+    int getLife() const
+    {
+        return life;
+    }
+    int getStatus() const
+    {
+        return mStatus;
+    }
 
 
 private:
     float xp;
     float mVelX;
     SDL_Rect firstTouch;
-    SDL_Rect pb;
+    SDL_Rect rPlayerBox;
     SDL_Rect mBox, rBox;
     SDL_Rect mClips[BULLET_FRAMES];
     SDL_Rect m_explosionClips[TOTAL_EXPLOSION_FRAME];
@@ -53,15 +63,19 @@ private:
     SDL_Texture *mTexture, *eTexture;
 };
 
-class FlyingMonster {
+class FlyingMonster
+{
 public:
-    public:
+public:
     FlyingMonster(const int &xp = 0,const int &yp = 0, SDL_Texture *p_texture = nullptr, SDL_Texture *b_texture = nullptr,SDL_Texture *e_texture = nullptr);
     ~FlyingMonster();
 
     void set_x_pos(const int& xp);
-//    void set_y_pos(const int& yp) {y_pos = yp;}
-    void setMapXY(const int& mp_x, const int& mp_y) {map_x = mp_x; map_y = mp_y;}
+    void setMapXY(const int& mp_x, const int& mp_y)
+    {
+        map_x = mp_x;
+        map_y = mp_y;
+    }
 
     void set_clips();
     void loadMonsterTexture(RenderWindow &window);
@@ -78,18 +92,21 @@ public:
 
     void handleBullets(RenderWindow &window, SDL_Rect &mCamera, const int &monster_status, const Input &input, const SDL_Rect &player_box, int player_status);
 
-    bool getDead() const {return isDead;}
+    bool getDead() const
+    {
+        return isDead;
+    }
 
-    SDL_Rect getBox() const {return mBox;}
+    SDL_Rect getBox() const
+    {
+        return mBox;
+    }
 private:
     int HP;
-    SDL_Rect mBox;
-    SDL_Rect currentBox;
+    SDL_Rect mBox, currentBox;
     SDL_Texture *mTexture, *bTexture, *eTexture;
     int mVelX, mVelY;
-    //int x_pos, y_pos;
     int x_min, x_max;
-    int push;
 
     SDL_Rect Monster_Clips[FMONSTER_FRAME_NUM];
     int frame;
@@ -98,9 +115,7 @@ private:
 
     int map_x;
     int map_y;
-    int cntAttacking;
     int thinkTime;
-    int cntDead;
     vector <Bullet*> bullets;
 
     int status;
@@ -115,7 +130,8 @@ private:
     vector <Animation> animations;
 };
 
-class FlyingMonsterFamily{
+class FlyingMonsterFamily
+{
 public:
     FlyingMonsterFamily(SDL_Texture *p_texture = nullptr, SDL_Texture *b_texture = nullptr, SDL_Texture *e_tex = nullptr);
     void show(RenderWindow &window, SDL_Rect &mCamera, const Input &input, const SDL_Rect &player_box, int player_status, GameState &state);

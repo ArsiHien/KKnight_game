@@ -80,19 +80,19 @@ bool Game::loadImage()
         cout << "Failed to load player texture\n";
         success = false;
     }
-    gTexture[DARK_WARRIOR_TEXTURE] = window.loadIMG("gfx/dw.png");
+    gTexture[DARK_WARRIOR_TEXTURE] = window.loadIMG("gfx/darkwarrior.png");
     if(gTexture[DARK_WARRIOR_TEXTURE] == nullptr)
     {
         cout << "Failed to load darkWarrior texture\n";
         success = false;
     }
-    gTexture[FLYING_MONSTER_TEXTURE] = window.loadIMG("gfx/fm.png");
+    gTexture[FLYING_MONSTER_TEXTURE] = window.loadIMG("gfx/flyingmonster.png");
     if(gTexture[FLYING_MONSTER_TEXTURE] == nullptr)
     {
         cout << "Failed to load flyingMonster texture\n";
         success = false;
     }
-    gTexture[BULLET_TEXTURE] = window.loadIMG("gfx/Bullet-export.png");
+    gTexture[BULLET_TEXTURE] = window.loadIMG("gfx/Bullet.png");
     if(gTexture[BULLET_TEXTURE] == nullptr)
     {
         cout << "Failed to load bullet texture\n";
@@ -104,7 +104,7 @@ bool Game::loadImage()
         cout << "Failed to load explosion texture\n";
         success = false;
     }
-    gTexture[BOSS_TEXTURE] = window.loadIMG("gfx/wineeeeeee.png");
+    gTexture[BOSS_TEXTURE] = window.loadIMG("gfx/boss.png");
     if(gTexture[BOSS_TEXTURE] == nullptr)
     {
         cout << "Failed to load boss texture\n";
@@ -272,13 +272,15 @@ void Game::handleGameEvent(SDL_Event &event)
     knight.handleEvent(event, state, hp);
 }
 
-void Game::renderGuide(){
+void Game::renderGuide()
+{
     window.clearScreen();
     menu.renderGuide(window);
     window.display();
 }
 
-void Game::handleGuideEvent(SDL_Event &event){
+void Game::handleGuideEvent(SDL_Event &event)
+{
     if(event.type == SDL_QUIT)
     {
         running = false;

@@ -10,8 +10,6 @@ const int DARK_WARRIOR_FRAME_NUM = 55;
 const int DARK_WARRIOR_SPEED = 1;
 const int DARK_WARRIOR_GRAVITY_SPEED = 1;
 const int DARK_WARRIOR_MAX_FALL_SPEED = 8;
-//const int MAX_DARK_WARRIOR_ATTACK = 3;
-//const int MAX_DARK_WARRIOR_DELAY = 120;
 
 class DarkWarrior {
 public:
@@ -38,12 +36,9 @@ public:
     SDL_Rect getBox(){return mBox;}
 private:
     int HP;
-    SDL_Rect mBox;
-    SDL_Rect currentBox;
-    SDL_Rect pb;
+    SDL_Rect mBox, currentBox;
     SDL_Texture *mTexture;
     int mVelX, mVelY;
-    //int x_pos, y_pos;
     int x_min, x_max;
 
     SDL_Rect mClips[DARK_WARRIOR_FRAME_NUM];
@@ -56,7 +51,6 @@ private:
     int thinkTime;
     bool hitting;
 
-    //vector <DarkWarrior*> threats_list;
     int status;
     Input input_type;
     bool isDead;

@@ -65,11 +65,13 @@ void Bullet::handleMove(SDL_Rect &mCamera)
 
 void Bullet::render(RenderWindow &window)
 {
-    if(hitting) {
-        if(mStatus == RIGHT) window.render(eTexture, pb.x + 5, pb.y + 8, EXPLOSION_WIDTH, EXPLOSION_HEIGHT , &m_explosionClips[eFrame/4]);
-        else window.render(eTexture, pb.x + 20, pb.y + 8, EXPLOSION_WIDTH, EXPLOSION_HEIGHT , &m_explosionClips[eFrame/4], 0, 0, SDL_FLIP_HORIZONTAL);
+    if(hitting)
+    {
+        if(mStatus == RIGHT) window.render(eTexture, rPlayerBox.x + 5, rPlayerBox.y + 8, EXPLOSION_WIDTH, EXPLOSION_HEIGHT, &m_explosionClips[eFrame/4]);
+        else window.render(eTexture, rPlayerBox.x + 20, rPlayerBox.y + 8, EXPLOSION_WIDTH, EXPLOSION_HEIGHT, &m_explosionClips[eFrame/4], 0, 0, SDL_FLIP_HORIZONTAL);
     }
-    else{
+    else
+    {
         if(mStatus == RIGHT) window.renderB(mTexture, &rBox, &mClips[frame/8]);
         else window.renderB(mTexture, &rBox, &mClips[frame/8], 0, 0, SDL_FLIP_HORIZONTAL);
     }
@@ -78,10 +80,11 @@ void Bullet::render(RenderWindow &window)
 bool Bullet::isHitting(Input i, SDL_Rect player_box, SDL_Rect &mCamera, int player_status)
 {
     if(eFrame == 0) firstTouch = player_box;
-    pb = {player_box.x - mCamera.x, player_box.y - mCamera.y, player_box.w, player_box.h};
+    rPlayerBox = {player_box.x - mCamera.x, player_box.y - mCamera.y, player_box.w, player_box.h};
     if(checkCollision(mBox, firstTouch))
     {
-        if(eFrame >= TOTAL_EXPLOSION_FRAME*4){
+        if(eFrame >= TOTAL_EXPLOSION_FRAME*4)
+        {
             eFrame = 0;
         }
         hitting = true;
@@ -90,7 +93,8 @@ bool Bullet::isHitting(Input i, SDL_Rect player_box, SDL_Rect &mCamera, int play
             life = 0;
             return false;
         }
-        if(eFrame == 10){
+        if(eFrame == 10)
+        {
             return true;
         }
         else return false;
@@ -126,15 +130,12 @@ FlyingMonster::FlyingMonster(const int &xp, const int &yp, SDL_Texture *p_textur
     x_max = xp + 100;
     input_type.left = 0;
     input_type.right = 0;
-    //x_pos = 0; y_pos = 0;
     mVelX = 0;
     mVelY = 0;
     map_x = 0;
     map_y = 0;
     isDead = false;
-    cntAttacking = 0;
     thinkTime = SCREEN_FPS*3/2;
-    cntDead = 0;
     BullHitting = false;
     animations.push_back(idle);
     animations.push_back(run);
@@ -505,7 +506,8 @@ void FlyingMonsterFamily::checkDied()
         }
 }
 
-bool FlyingMonsterFamily::isWin(){
+bool FlyingMonsterFamily::isWin()
+{
     if(FlyingMonsters.size() == 0) return true;
     else return false;
 }

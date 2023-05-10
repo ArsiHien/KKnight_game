@@ -84,7 +84,8 @@ void Menu::handleEvent(SDL_Event &e, GameState &state, Mix_Chunk *gSound[])
                 }
             }
         }
-        else if(state == STATE_GUIDE){
+        else if(state == STATE_GUIDE)
+        {
             if(i == HOME)
             {
                 if(buttonBox[i].x <= x && x <= buttonBox[i].x + buttonBox[i].w && buttonBox[i].y <= y && y <= buttonBox[i].y + buttonBox[i].h)
@@ -139,19 +140,22 @@ void Menu::renderMenuInGame(RenderWindow &window, GameState &state)
         {
         case STATE_PAUSE_MENU:
             window.renderB(mTexture, &titleBox, &titleClips[PAUSE]);
-            if(i == CONTINUE || i == QUIT2){
+            if(i == CONTINUE || i == QUIT2)
+            {
                 window.renderB(mTexture, &buttonBox[i], &buttonClips[i][mouseover[i]]);
             }
             break;
         case STATE_GAME_OVER_MENU:
             window.renderB(mTexture, &titleBox, &titleClips[GAMEOVER]);
-            if(i == PLAY_AGAIN || i == QUIT2){
+            if(i == PLAY_AGAIN || i == QUIT2)
+            {
                 window.renderB(mTexture, &buttonBox[i], &buttonClips[i][mouseover[i]]);
             }
             break;
         case STATE_WIN_MENU:
             window.renderB(mTexture, &titleBox, &titleClips[VICTORY]);
-            if(i == PLAY_AGAIN || i == QUIT2){
+            if(i == PLAY_AGAIN || i == QUIT2)
+            {
                 window.renderB(mTexture, &buttonBox[i], &buttonClips[i][mouseover[i]]);
             }
             break;
@@ -161,7 +165,8 @@ void Menu::renderMenuInGame(RenderWindow &window, GameState &state)
     }
 }
 
-void Menu::renderGuide(RenderWindow &window){
+void Menu::renderGuide(RenderWindow &window)
+{
     window.renderB(mTexture, &backgroundBox, &guideClip);
     window.renderB(mTexture, &buttonBox[HOME], &buttonClips[HOME][mouseover[HOME]]);
 }

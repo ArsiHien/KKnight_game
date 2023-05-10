@@ -28,8 +28,6 @@ public:
     bool touchesWall(Tile *map_data);
     bool checkCollision(SDL_Rect a, SDL_Rect b);
 
-    //dwvector <Boss*> makeThreatList(SDL_Renderer* ren);
-
     void isAttacked(const Input &input, const SDL_Rect &player_box, const SDL_Rect &player_currentBox, const int &player_status);
     bool isAttacking (const Input &input, SDL_Rect player_box);
     bool isAttacking2(const Input &input, SDL_Rect player_box);
@@ -41,16 +39,10 @@ public:
     SDL_Rect getBox(){return mBox;}
 private:
     int HP;
-    SDL_Rect mBox;
-    SDL_Rect currentBox;
-    SDL_Rect pb;
-    SDL_Rect Attack_box;
+    SDL_Rect mBox, currentBox, Attack_box, rPlayerBox;
     SDL_Texture *mTexture;
     int mVelX, mVelY;
-    //int x_pos, y_pos;
     int x_min, x_max;
-    int push;
-
     SDL_Rect Boss_Clips[BOSS_FRAME_NUM];
     int frame, sFrame;
 
@@ -62,7 +54,6 @@ private:
     int skillTime;
     bool hitting, skillHitting;
 
-    //vector <Boss*> threats_list;
     int status;
     Input input_type;
     bool isDead;

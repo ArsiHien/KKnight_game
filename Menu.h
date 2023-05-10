@@ -27,20 +27,23 @@ const int LONG_BUTTON_HEIGHT = 60;
 const int LONG_BUTTON_TEXTURE_WIDTH = 960;
 const int LONG_BUTTON_TEXTURE_HEIGHT = 160;
 
-enum Background{
+enum Background
+{
     BACKGROUND_START,
     BACKGROUND_INGAME,
     TOTAL_BACKGROUND,
 };
 
-enum Title{
+enum Title
+{
     PAUSE,
     GAMEOVER,
     VICTORY,
     TOTAL_TITLE,
 };
 
-enum Button{
+enum Button
+{
     PLAY,
     GUIDE,
     QUIT1,
@@ -51,7 +54,8 @@ enum Button{
     TOTAL_BUTTON,
 };
 
-class Menu{
+class Menu
+{
 public:
     Menu(SDL_Texture *menu_texture = nullptr, SDL_Texture *bg_texture = nullptr);
     void handleEvent(SDL_Event &e, GameState &state, Mix_Chunk *gSound[]);

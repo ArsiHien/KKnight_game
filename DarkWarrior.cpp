@@ -11,7 +11,6 @@ DarkWarrior::DarkWarrior(int xp, int yp, SDL_Texture *p_texture)
     mBox = {xp, yp, 96, 96};
     x_min = xp - 150;
     x_max = xp + 150;
-    //x_pos = 0; y_pos = 0;
     mVelX = 0;
     mVelY = 0;
     map_x = 0;
@@ -363,7 +362,8 @@ void DarkWarriorFamily::checkDied()
         }
 }
 
-bool DarkWarriorFamily::isWin(){
+bool DarkWarriorFamily::isWin()
+{
     if(darkWarriors.size() == 0) return true;
     else return false;
 }

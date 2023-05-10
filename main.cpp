@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "Timer.h"
-
 #include <iostream>
 
 void freeTexture(SDL_Texture *Texture)
@@ -16,19 +15,25 @@ int main(int argc, char* argv[])
 {
     Game game;
     LTimer capTimer;
-    if(!game.init()){
+    if(!game.init())
+    {
         cout << "Failed to init\n";
     }
-    else{
-        if(!game.loadMedia()){
+    else
+    {
+        if(!game.loadMedia())
+        {
             cout << "Failed to load media\n";
             game.close();
         }
-        else{
+        else
+        {
             SDL_Event event;
-            while(game.isRunning()){
+            while(game.isRunning())
+            {
                 capTimer.start();
-                switch (game.getState()){
+                switch (game.getState())
+                {
                 case STATE_START_MENU:
                     while(SDL_PollEvent(&event)) game.handleStartMenuEvent(event);
                     game.renderStartMenu();
@@ -37,7 +42,9 @@ int main(int argc, char* argv[])
                     while(SDL_PollEvent(&event)) game.handleGuideEvent(event);
                     game.renderGuide();
                     break;
-                case STATE_PAUSE_MENU: case STATE_GAME_OVER_MENU: case STATE_WIN_MENU:
+                case STATE_PAUSE_MENU:
+                case STATE_GAME_OVER_MENU:
+                case STATE_WIN_MENU:
                     while(SDL_PollEvent(&event)) game.handleSubMenu(event);
                     game.renderSubMenu();
                     break;
@@ -48,7 +55,7 @@ int main(int argc, char* argv[])
                 default:
                     break;
                 }
-                 int frameTicks = capTimer.getTicks();
+                int frameTicks = capTimer.getTicks();
                 if( frameTicks < SCREEN_TICKS_PER_FRAME )
                 {
                     SDL_Delay( SCREEN_TICKS_PER_FRAME - frameTicks );
