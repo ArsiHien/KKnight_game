@@ -1,16 +1,16 @@
 #include "Header.h"
 #include "GameMap.h"
 
-GameMap::GameMap()
+GameMap::GameMap(SDL_Texture *p_texture)
 {
-
+    mTexture = p_texture;
 }
 
 void GameMap::setTiles()
 {
     int x = 0;
     int y = 0;
-    ifstream mapFile("map/map1.txt");
+    ifstream mapFile("map/map.txt");
     if(!mapFile.is_open())
     {
         cout << "Error! Cannot open mapFile" << endl;
@@ -45,15 +45,6 @@ void GameMap::setTiles()
         }
     }
     mapFile.close();
-}
-
-void GameMap::loadTileTexture(RenderWindow& window)
-{
-    mTexture = window.loadIMG("map/mainlev_build.png");
-    if(mTexture == NULL)
-    {
-        cout << "Failed to load map texture\n";
-    }
 }
 
 void GameMap::render(RenderWindow &window, SDL_Rect &camera)

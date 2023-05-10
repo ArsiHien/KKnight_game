@@ -32,15 +32,19 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Boss.cpp" />
+		<Unit filename="Boss.h" />
 		<Unit filename="DarkWarrior.cpp" />
 		<Unit filename="DarkWarrior.h" />
-		<Unit filename="Enemy.cpp" />
-		<Unit filename="Enemy.h" />
 		<Unit filename="FlyingMonster.cpp" />
 		<Unit filename="FlyingMonster.h" />
+		<Unit filename="Game.cpp" />
+		<Unit filename="Game.h" />
 		<Unit filename="GameMap.cpp" />
 		<Unit filename="GameMap.h" />
 		<Unit filename="Header.h" />
+		<Unit filename="Menu.cpp" />
+		<Unit filename="Menu.h" />
 		<Unit filename="Player.cpp" />
 		<Unit filename="Player.h" />
 		<Unit filename="RenderWindow.cpp" />

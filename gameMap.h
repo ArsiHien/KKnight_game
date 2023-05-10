@@ -8,9 +8,8 @@
 class GameMap
 {
 public:
-    GameMap();
+    GameMap(SDL_Texture *p_texture = nullptr);
     void setTiles();
-    void loadTileTexture(RenderWindow& window);
     void render(RenderWindow &window, SDL_Rect& camera);
     Tile* getMap() {return tileSet;}
 

@@ -1,29 +1,28 @@
 # depslib dependency file v1.0
-1682608199 source:d:\kknight\main.cpp
-	"Header.h"
-	"RenderWindow.h"
+1683689474 source:d:\kknight\main.cpp
+	"Game.h"
 	"Timer.h"
-	"GameMap.h"
-	"Player.h"
-	"Enemy.h"
-	"FlyingMonster.h"
+	<iostream>
 
-1682525032 source:d:\kknight\renderwindow.cpp
+1683692497 source:d:\kknight\renderwindow.cpp
 	"renderWindow.h"
 
-1681191082 d:\kknight\renderwindow.h
+1683640300 d:\kknight\renderwindow.h
 	"Header.h"
 
-1682605315 d:\kknight\header.h
+1683688798 d:\kknight\header.h
 	<iostream>
 	<vector>
 	<string>
+	<sstream>
 	<fstream>
 	<cmath>
 	<SDL.h>
 	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
 
-1682480475 source:d:\kknight\tile.cpp
+1683341905 source:d:\kknight\tile.cpp
 	"Tile.h"
 	"Player.h"
 
@@ -31,23 +30,23 @@
 	"Header.h"
 	"RenderWindow.h"
 
-1681187532 source:d:\kknight\gamemap.cpp
+1683627625 source:d:\kknight\gamemap.cpp
 	"Header.h"
 	"GameMap.h"
 
-1679930915 d:\kknight\gamemap.h
+1682997898 d:\kknight\gamemap.h
 	"Header.h"
 	"RenderWindow.h"
 	"Tile.h"
 
-1682481848 d:\kknight\player.h
+1683696204 d:\kknight\player.h
 	"Header.h"
 	"RenderWindow.h"
 	"Tile.h"
 	"GameMap.h"
 	"Enemy.h"
 
-1682522533 source:d:\kknight\player.cpp
+1683696204 source:d:\kknight\player.cpp
 	"Player.h"
 
 1679757875 source:d:\kknight\imptimer.cpp
@@ -56,30 +55,60 @@
 1679757875 d:\kknight\imptimer.h
 	"Header.h"
 
-1682608056 source:d:\kknight\enemy.cpp
-	"Enemy.h"
+1683341964 source:d:\kknight\enemy.cpp
 
-1682483716 d:\kknight\enemy.h
+1683341964 d:\kknight\enemy.h
+
+1683696533 source:d:\kknight\darkwarrior.cpp
+	"DarkWarrior.h"
+
+1683449789 d:\kknight\darkwarrior.h
 	"Header.h"
 	"Tile.h"
 	"RenderWindow.h"
 
-1682483730 source:d:\kknight\darkwarrior.cpp
-
-1682483312 d:\kknight\darkwarrior.h
-	"Enemy.h"
-
-1682608374 source:d:\kknight\flyingmonster.cpp
+1683696510 source:d:\kknight\flyingmonster.cpp
 	"FlyingMonster.h"
 
-1682649145 d:\kknight\flyingmonster.h
+1683696510 d:\kknight\flyingmonster.h
 	"Header.h"
 	"Tile.h"
 	"RenderWindow.h"
 
-1682524696 source:d:\kknight\timer.cpp
+1683341905 source:d:\kknight\timer.cpp
 	"timer.h"
 
 1682524696 d:\kknight\timer.h
 	<SDL.h>
+
+1683696533 source:d:\kknight\game.cpp
+	"Game.h"
+
+1683689389 d:\kknight\game.h
+	"Header.h"
+	"RenderWindow.h"
+	"Menu.h"
+	"Timer.h"
+	"GameMap.h"
+	"Player.h"
+	"DarkWarrior.h"
+	"FlyingMonster.h"
+	"Boss.h"
+
+1682767509 source:d:\kknight\button.cpp
+
+1683689603 source:d:\kknight\menu.cpp
+	"Menu.h"
+
+1683689400 d:\kknight\menu.h
+	"Header.h"
+	"RenderWindow.h"
+
+1683696316 source:d:\kknight\boss.cpp
+	"Boss.h"
+
+1683539206 d:\kknight\boss.h
+	"Header.h"
+	"Tile.h"
+	"RenderWindow.h"
 

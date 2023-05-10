@@ -1,53 +1,7 @@
-#include "Header.h"
-#include "RenderWindow.h"
+#include "Game.h"
 #include "Timer.h"
-#include "GameMap.h"
-#include "Player.h"
-#include "Enemy.h"
-#include "FlyingMonster.h"
 
-
-SDL_Event event;
-RenderWindow windowScreen;
-SDL_Rect fullScreen = {0, 0, SCREEN_HEIGHT, SCREEN_WIDTH};
-
-vector <Monster*> makeThreatList()
-{
-    vector <Monster*> list_threats;
-    Monster* threats_objs = new Monster[3];
-
-    for(int i = 0; i < 3; i++)
-    {
-        Monster* p_threat = (threats_objs + i);
-        if(p_threat != nullptr)
-        {
-            p_threat->loadMonsterTexture(windowScreen);
-            p_threat->set_clips();
-            p_threat->set_x_pos(200 + i*500);;
-            list_threats.push_back(p_threat);
-        }
-    }
-    return list_threats;
-}
-
-vector <FlyingMonster*> FmakeThreatList()
-{
-    vector <FlyingMonster*> list_threats;
-    FlyingMonster* threats_objs = new FlyingMonster[1];
-
-    for(int i = 0; i < 1; i++)
-    {
-        FlyingMonster* p_threat = (threats_objs + i);
-        if(p_threat != nullptr)
-        {
-            p_threat->loadMonsterTexture(windowScreen);
-            p_threat->set_clips();
-            p_threat->set_x_pos(300 + i*500);;
-            list_threats.push_back(p_threat);
-        }
-    }
-    return list_threats;
-}
+#include <iostream>
 
 void freeTexture(SDL_Texture *Texture)
 {
@@ -60,129 +14,48 @@ void freeTexture(SDL_Texture *Texture)
 
 int main(int argc, char* argv[])
 {
+    Game game;
     LTimer capTimer;
-    windowScreen.initWindow();
-
-    SDL_Texture *mTexture = windowScreen.loadIMG("gfx/background.png");
-    SDL_Texture *play_again_button = windowScreen.loadIMG("gfx/play_again.png");
-    SDL_Texture *exit_button = windowScreen.loadIMG("gfx/exit.png");
-
-    bool gameRunning = true;
-    GameMap Map;
-    SDL_Rect mCamera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-    Map.setTiles();
-    Map.loadTileTexture(windowScreen);
-
-    Tile *map_data = Map.getMap();
-    Player knight;
-    knight.setClips();
-    knight.loadPlayerTexture(windowScreen);
-
-    vector <Monster*> threats_list = makeThreatList();
-    vector <FlyingMonster*> fthreats_list = FmakeThreatList();
-
-    while(gameRunning)
-    {
-        while(SDL_PollEvent(&event))
-        {
-            if(event.type == SDL_QUIT) gameRunning = false;
-            knight.handleEvent(event);
+    if(!game.init()){
+        cout << "Failed to init\n";
+    }
+    else{
+        if(!game.loadMedia()){
+            cout << "Failed to load media\n";
+            game.close();
         }
-        windowScreen.clearScreen();
-        windowScreen.render(mTexture,0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        if(knight.isDead())
-        {
-            freeTexture(mTexture);
-            threats_list.clear();
-            mTexture = windowScreen.loadIMG("gfx/Game_Over_logo.png");
-            windowScreen.render(mTexture,0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            windowScreen.render(play_again_button, 1000, 150, 200, 200);
-            windowScreen.render(exit_button, 100, 150, 200, 200);
-            while(SDL_PollEvent(&event))
-            {
-                if(event.type == SDL_QUIT) gameRunning = false;
-                if (event.type == SDL_MOUSEBUTTONDOWN)
-                {
-                    int x = event.button.x;
-                    int y = event.button.y;
-                    if(pow((x - 100 - 100),2) + pow((y - 150 - 100),2) <= 10000) gameRunning = false;
-                    else if(pow((x - 1000 - 100),2) + pow((y - 150 - 100),2) <= 10000)
-                    {
-                        freeTexture(mTexture);
-                        mTexture = windowScreen.loadIMG("gfx/background.png");
-                        knight = Player();
-                        knight.setClips();
-                        knight.loadPlayerTexture(windowScreen);
-                        threats_list = makeThreatList();
-                    }
+        else{
+            SDL_Event event;
+            while(game.isRunning()){
+                capTimer.start();
+                switch (game.getState()){
+                case STATE_START_MENU:
+                    while(SDL_PollEvent(&event)) game.handleStartMenuEvent(event);
+                    game.renderStartMenu();
+                    break;
+                case STATE_GUIDE:
+                    while(SDL_PollEvent(&event)) game.handleGuideEvent(event);
+                    game.renderGuide();
+                    break;
+                case STATE_PAUSE_MENU: case STATE_GAME_OVER_MENU: case STATE_WIN_MENU:
+                    while(SDL_PollEvent(&event)) game.handleSubMenu(event);
+                    game.renderSubMenu();
+                    break;
+                case STATE_PLAY:
+                    while (SDL_PollEvent(&event)) game.handleGameEvent(event);
+                    game.renderGame();
+                    break;
+                default:
+                    break;
                 }
-
-            }
-        }
-        else if(threats_list.size() == 0 && fthreats_list.size() == 0)
-        {
-            freeTexture(mTexture);
-            mTexture = windowScreen.loadIMG("gfx/win.png");
-            windowScreen.render(mTexture,0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        }
-        else
-        {
-            Map.render(windowScreen, mCamera);
-
-            knight.doPlayer(map_data);
-            knight.centerPlayerOnMap(mCamera);
-            knight.show(windowScreen, mCamera);
-            knight.drawHP(*windowScreen.getRenderer(), mCamera);
-
-            for(int i = 0; i < threats_list.size(); i++)
-            {
-                Monster* p_threat = threats_list.at(i);
-                if(p_threat != nullptr)
-                {
-                    p_threat->setMapXY(mCamera.x, mCamera.y);
-                    p_threat->move(knight.getBox(), map_data);
-                    p_threat->show(windowScreen);
-                    p_threat->isAttacked(knight.getInputType(), knight.getBox(), knight.getCurrentBox(), knight.getStatus());
-                    p_threat->drawHP(*windowScreen.getRenderer(), mCamera);
-                    if(p_threat->getDead())
-                    {
-                        threats_list.erase(threats_list.begin() + i);
-                    }
-                    knight.isHitted(p_threat->isAttacking(knight.getInputType(), knight.getBox()), p_threat->getStatus());
-                }
-            }
-
-            for(int i = 0; i < fthreats_list.size(); i++)
-            {
-                FlyingMonster* p_threat = fthreats_list.at(i);
-                if(p_threat != nullptr)
-                {
-                    p_threat->setMapXY(mCamera.x, mCamera.y);
-                    p_threat->move(knight.getBox(), map_data);
-                    p_threat->show(windowScreen);
-                    p_threat->isAttacked(knight.getInputType(), knight.getBox(), knight.getCurrentBox(), knight.getStatus());
-                    p_threat->drawHP(*windowScreen.getRenderer(), mCamera);
-                    if(p_threat->getDead())
-                    {
-                        fthreats_list.erase(fthreats_list.begin() + i);
-                    }
-                    knight.isHitted(p_threat->isAttacking(knight.getInputType(), knight.getBox()), p_threat->getStatus());
-                }
-            }
-        }
-         int frameTicks = capTimer.getTicks();
+                 int frameTicks = capTimer.getTicks();
                 if( frameTicks < SCREEN_TICKS_PER_FRAME )
                 {
-                    //Wait remaining time
                     SDL_Delay( SCREEN_TICKS_PER_FRAME - frameTicks );
                 }
-
-        windowScreen.display();
+            }
+        }
     }
-    freeTexture(mTexture);
-    freeTexture(play_again_button);
-    freeTexture(exit_button);
-    windowScreen.quitSDL();
+    game.close();
     return 0;
 }

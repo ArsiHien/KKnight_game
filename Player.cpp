@@ -1,11 +1,13 @@
 #include "Player.h"
 
-Player::Player()
+Player::Player(SDL_Texture *p_tex, SDL_Texture *hp_tex)
 {
+    mTexture = p_tex;
+    hpTexture = hp_tex;
     frame = 0;
+    eFrame = 0;
     status = NONE;
     on_ground = false;
-    mTexture = nullptr;
     direction = 1;
     HP = HP_MAX;
     mVelX = 0;
@@ -19,7 +21,19 @@ Player::Player()
     animations.push_back(hurt);
     animations.push_back(jump);
     animations.push_back(run);
-    animations.push_back(run_attack);
+
+    SDL_Rect hp1 = {1024, 1152, 32, 32};
+    SDL_Rect hp2 = {2448, 528, 32, 32};
+    SDL_Rect hp3 = {3424, 704, 32, 32};
+    SDL_Rect hp4 = {4352, 864, 32, 32};
+    SDL_Rect hp5 = {4848, 656, 32, 32};
+    potions.push_back(hp1);
+    potions.push_back(hp2);
+    potions.push_back(hp3);
+    potions.push_back(hp4);
+    potions.push_back(hp5);
+
+    setClips();
 
     mBox = {0, 0, 64, 80};
 }
@@ -40,16 +54,7 @@ void Player::setClips()
     }
 }
 
-void Player::loadPlayerTexture(RenderWindow &window)
-{
-    mTexture = window.loadIMG("gfx/Sprite-0003.png");
-    if(mTexture == nullptr)
-    {
-        cout << "Failed to load player texture\n";
-    }
-}
-
-void Player::handleEvent( SDL_Event& event )
+void Player::handleEvent( SDL_Event& event, GameState &state, int &hp)
 {
     if(HP <= 0) return;
     if(event.type == SDL_KEYDOWN)
@@ -105,12 +110,18 @@ void Player::handleEvent( SDL_Event& event )
                 frame = 0;
             }
             break;
-//        case SDLK_i:
-//            if(input_type.run == 1)
-//            {
-//                input_type.run_attack = 1;
-//            }
-//            break;
+        case SDLK_e:
+            if(hp > 0){
+                HP += min(5, HP_MAX - HP);
+                hp--;
+            }
+            break;
+        case SDLK_ESCAPE:
+            input_type.run = 0;
+            input_type.left = 0;
+            input_type.right = 0;
+            state = STATE_PAUSE_MENU;
+            break;
         }
     }
     else if(event.type == SDL_KEYUP)
@@ -166,24 +177,23 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
         }
         frame = ++frame%(defend.amount_of_frame*slow);
     }
-//    else if(input_type.hurt == 1)
-//    {
-//        dxr = hurt.denta_x_right, dxl = hurt.denta_x_left, dy = hurt.denta_y;
-//        slow = hurt.slow_down;
-//        currentBox.w = hurt.frame_width;
-//        currentBox.h = hurt.frame_height;
-//        for(int i = 0; i <hurt.index; i++)
-//        {
-//            t += animations[i].amount_of_frame;
-//        }
-//        frame++;
-//        cout << 3 << " ";
-//        if(frame >= hurt.amount_of_frame*slow)
-//        {
-//            frame = 0;
-//            input_type.hurt = 0;
-//        }
-//    }
+    else if(input_type.hurt == 1)
+    {
+        dxr = hurt.denta_x_right, dxl = hurt.denta_x_left, dy = hurt.denta_y;
+        slow = hurt.slow_down;
+        currentBox.w = hurt.frame_width;
+        currentBox.h = hurt.frame_height;
+        for(int i = 0; i <hurt.index; i++)
+        {
+            t += animations[i].amount_of_frame;
+        }
+        frame++;
+        if(frame >= hurt.amount_of_frame*slow)
+        {
+            frame = 0;
+            input_type.hurt = 0;
+        }
+    }
     else if(input_type.attack1 == 1)
     {
         dxr = attack1.denta_x_right, dxl = attack1.denta_x_left, dy = attack1.denta_y;
@@ -252,18 +262,6 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
             input_type.jump = 0;
         }
     }
-    else if(input_type.run_attack == 1)
-    {
-        dxr = run_attack.denta_x_right, dxl = run_attack.denta_x_left, dy = run_attack.denta_y;
-        slow = run_attack.slow_down;
-        currentBox.w = run_attack.frame_width;
-        currentBox.h = run_attack.frame_height;
-        for(int i = 0; i <run_attack.index; i++)
-        {
-            t += animations[i].amount_of_frame;
-        }
-        frame = ++frame%(run.amount_of_frame*slow);
-    }
     else if(input_type.run == 1)
     {
         dxr = run.denta_x_right, dxl = run.denta_x_left, dy = run.denta_y;
@@ -302,6 +300,11 @@ void Player::show(RenderWindow &window, SDL_Rect &mCamera)
     {
         window.render(mTexture, currentBox.x - mCamera.x - dxl, currentBox.y - mCamera.y - dy, currentBox.w, currentBox.h, current_clip, 0.0, NULL, SDL_FLIP_HORIZONTAL);
     }
+    SDL_Rect b = {currentBox.x - mCamera.x - dxr, currentBox.y - mCamera.y - dy, currentBox.w, currentBox.h};
+    for(int i = 0; i < potions.size(); i++){
+        window.render(hpTexture, potions[i].x - mCamera.x, potions[i].y - mCamera.y, potions[i].w, potions[i].h);
+    }
+    window.render(hpTexture, 50, 50, 32, 32);
 }
 
 void Player::doPlayer(Tile *map_data)
@@ -312,33 +315,31 @@ void Player::doPlayer(Tile *map_data)
     {
         mVelY = MAX_FALL_SPEED;
     }
-//    if(input_type.hurt == 1){
-//        mBox.x += 0.5*PLAYER_SPEED*direction;
-//        if(( mBox.x < 0 ) || ( mBox.x + mBox.w > LEVEL_WIDTH ) || touchesWall( map_data ) ){
-//            mBox.x -= 0.5*PLAYER_SPEED*direction;
-//        }
-//    }
-    if(input_type.run == 1)
+    if(input_type.hurt == 0)
     {
-        if(input_type.left == 1)
+        if(input_type.run == 1)
         {
-            mVelX -= PLAYER_SPEED;
+            if(input_type.left == 1)
+            {
+                mVelX -= PLAYER_SPEED;
+            }
+            else if(input_type.right == 1)
+            {
+                mVelX += PLAYER_SPEED;
+            }
         }
-        else if(input_type.right == 1)
+        if(input_type.jump == 1)
         {
-            mVelX += PLAYER_SPEED;
+            if(on_ground == true)
+            {
+                if(mVelY > 0) mVelY -= PLAYR_JUMP_VAL;
+                on_ground = false;
+            }
+            input_type.jump = 0;
         }
     }
-    if(input_type.jump == 1)
+    if(HP <= 0)
     {
-        if(on_ground == true)
-        {
-            if(mVelY > 0) mVelY -= PLAYR_JUMP_VAL;
-            on_ground = false;
-        }
-        input_type.jump = 0;
-    }
-    if(HP <= 0){
         mVelX = 0;
     }
     checkToMap(map_data);
@@ -401,7 +402,7 @@ bool Player::touchesWall(Tile *map_data)
 {
     for( int i = 0; i < TOTAL_TILES; ++i )
     {
-        if(map_data[i].getType() != -1)
+        if(map_data[i].getType() != -1 && map_data[i].getType() != ENEMY_TILE_TYPE)
         {
             if( checkCollision( mBox, map_data[i].getBox()) )
             {
@@ -414,7 +415,7 @@ bool Player::touchesWall(Tile *map_data)
 
 void Player::drawHP(SDL_Renderer &ren, SDL_Rect &mCamera)
 {
-    SDL_Rect health_box = {mBox.x + mBox.w/2 - HP_MAX/20 - mCamera.x, mBox.y - 10 - mCamera.y, HP/10, 6};
+    SDL_Rect health_box = {mBox.x + mBox.w/4 - HP_MAX*3/5 - mCamera.x, mBox.y - 10 - mCamera.y, HP*3, 6};
 
     if(HP > 0)
     {
@@ -424,13 +425,24 @@ void Player::drawHP(SDL_Renderer &ren, SDL_Rect &mCamera)
     SDL_SetRenderDrawColor(&ren, 0, 250, 154, 255);
     for(int i = 0; i < 5; i++)
     {
-        health_box = {mBox.x + mBox.w/2 - HP_MAX/20 - mCamera.x + i*HP_MAX/50, mBox.y - 10 - mCamera.y, HP_MAX/50, 6};
+        health_box = {mBox.x + mBox.w/4 - HP_MAX*3/5 - mCamera.x + i*HP_MAX*3/5, mBox.y - 10 - mCamera.y, HP_MAX*3/5, 6};
         if(HP <= 0)
         {
-            if(status == LEFT) health_box.x = mBox.x + mBox.w/2 - HP_MAX/20 - mCamera.x + i*HP_MAX/50;
-            else health_box.x = mBox.x + mBox.w/2 - mCamera.x + i*HP_MAX/50;
+            if(status == LEFT) health_box.x = mBox.x + mBox.w/2 - HP_MAX/2 - mCamera.x + i*HP_MAX*3/5;
+            else health_box.x = mBox.x + mBox.w/2 - mCamera.x + i*HP_MAX*3/5;
         }
         SDL_RenderDrawRect(&ren, &health_box);
+    }
+}
+
+void Player::isHittingPotion(int &hp){
+    for(int i = 0; i < potions.size(); i++){
+        if(checkCollision(potions[i], mBox)){
+            if(input_type.attack1 == 1 || input_type.attack2 == 1 || input_type.attack3 == 1){
+                hp++;
+                potions.erase(potions.begin() + i);
+            }
+        }
     }
 }
 
@@ -438,10 +450,12 @@ void Player::isHitted(bool hitted, int enemy_status)
 {
     if(hitted)
     {
-        //HP--;
-        if(input_type.hurt == 0) input_type.hurt = 1;
-        if(enemy_status == RIGHT) direction = 1;
-        else direction = -1;
+        HP--;
+        if(input_type.hurt == 0)
+        {;
+            input_type.hurt = 1;
+            frame = 0;
+        }
     }
 }
 
